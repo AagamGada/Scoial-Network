@@ -5,14 +5,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Container } from "@material-ui/core";
 import { useHistory, Link } from "react-router-dom";
@@ -25,7 +21,7 @@ import HomeIcon from "@material-ui/icons/Home";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 0,
-    BorderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
+    borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -91,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     color: "black",
     boxShadow: "none",
+    borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
   },
 }));
 
@@ -161,7 +158,6 @@ export default function PrimarySearchAppBar() {
         Profile
       </MenuItem>
       <MenuItem onClick={Logout}>Logout</MenuItem>
-      {/* <MenuItem onClick={DeleteAccount}>Delete Account</MenuItem> */}
     </Menu>
   );
 
@@ -176,21 +172,11 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={() => {history.push("/");}}>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
+          <HomeIcon/>
         </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+        <p>Home</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -209,17 +195,9 @@ export default function PrimarySearchAppBar() {
   return (
     <>
       <div className={classes.grow}>
-        <AppBar position="static" className={classes.topBar}>
+        <AppBar position="fixed" className={classes.topBar}>
           <Container maxWidth="md">
             <Toolbar>
-              {/* <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-              >
-                <MenuIcon />
-              </IconButton> */}
               <Typography className={classes.title} variant="h6" noWrap>
                 Social Network
               </Typography>
@@ -242,20 +220,12 @@ export default function PrimarySearchAppBar() {
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
                 <IconButton aria-label="show 4 new mails" color="inherit">
-                  {/* <Badge badgeContent={4} color="secondary"> */}
                   <HomeIcon
                     onClick={() => {
                       history.push("/");
                     }}
                   />
-                  {/* </Badge> */}
                 </IconButton>
-                {/* <IconButton aria-label="show 17 new notifications" color="inherit">
-                  <Badge badgeContent={17} color="secondary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton> */}
-
                 <IconButton
                   edge="end"
                   aria-label="account of current user"
@@ -315,7 +285,6 @@ export default function PrimarySearchAppBar() {
               );
             })}
       </div>
-      {/* {console.log(allUsers[0]?.user[1].name)} */}
     </>
   );
 }

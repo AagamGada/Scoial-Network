@@ -1,15 +1,3 @@
-// import {
-//     POSTS_ERROR,
-//     POSTS_LOADED,
-//     POSTS_UNLOADED,
-//     POST_LOADED,
-//     POST_UNLOADED,
-//     ADD_POST,
-//     COMMENTS_LOADED,
-//     COMMENTS_UNLOADED,
-//     POST_LOADING,
-//   } from "./constants";
-
 const initialState = {
   posts: [],
   post: {},

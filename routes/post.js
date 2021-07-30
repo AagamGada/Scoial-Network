@@ -12,7 +12,7 @@ router.get("/:postId", authMiddleware, postController.getParticularPost);
 router.put("/edit/:postId", authMiddleware, postController.editPost);
 router.delete("/:postId", authMiddleware, postController.deletePost);
 router.put("/likes/:id" , authMiddleware, postController.likePost);
-router.get("likes/:postId", authMiddleware, postController.getAllLikes);
+router.get("/getlikes/:postId", authMiddleware, postController.getAllLikes);
 
 module.exports = router;
 

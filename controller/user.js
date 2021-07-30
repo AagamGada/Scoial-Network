@@ -40,6 +40,9 @@ module.exports = {
         isVerified: user.isVerified,
         followers: user.followers,
         following: user.following,
+        city: user.city,
+        bio: user.bio,
+        image: user.image,
       };
 
       let accessToken = createAccessToken(payload);
@@ -91,6 +94,9 @@ module.exports = {
           isVerified: user.isVerified,
           followers: user.followers,
           following: user.following,
+          city: user.city,
+          bio: user.bio,
+          image: user.image,
         };
         let accessToken = createAccessToken(payload);
 
@@ -190,7 +196,7 @@ module.exports = {
         name: 1,
         image: 1,
       });
-      res.status(200).send(user);
+      res.status(200).send(user.followers);
     } catch (err) {
       console.log(err);
     }
@@ -202,8 +208,8 @@ module.exports = {
         name: 1,
         image: 1,
       });
-      console.log(user);
-      res.status(200).send(user);
+      // console.log(user);
+      res.status(200).send(user.following);
     } catch (err) {
       console.log(err);
     }
@@ -226,7 +232,7 @@ module.exports = {
         to: req.body.email, // list of receivers
         subject: "Email Verification", // Subject line
         text: "Hello world?", // plain text body
-        html: `<p>Thank you for signing up. Please click this <a href=http://localhost:3000/newPassword/${req.body.email}>link</a> to verify your email</p>`, 
+        html: `<p>Thank you for signing up. Please click this <a href=http://localhost:3000/newPassword/${req.body.email}>link</a> to verify your email</p>`,
       });
       res.status(201).send("Email sent");
     } catch (err) {

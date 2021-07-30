@@ -25,7 +25,6 @@ const Login = () => {
             history.push("/")
         }catch(err){
             console.log(err);
-            // userDispatch({type:"USER_ERROR",payload:err.response.data.msg});
             enqueueSnackbar("Invalid login credentials",{variant:"error"})
         }
     }

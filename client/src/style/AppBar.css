@@ -6,16 +6,18 @@
 }
 .searchUser{
     margin-top: 10px;
+    margin-left: 40%;
 }
 .diffUser{
     margin-left: 10px;
 }
 .users{
     position: fixed;
-    width: 500px;
+    /* width: 500px; */
+    width: 100%;
     background:whitesmoke;
-    top: 65px;
-    left: 240px;
+    top: 64px;
+    /* left: 240px; */
 }
 
 .userLine{

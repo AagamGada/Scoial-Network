@@ -6,7 +6,6 @@ const validateUserRegister = [
     .withMessage("The name shouldn't be empty string")
     .isString()
     .withMessage("The name must be string")
-    .isLength({ min: 5 })
     .withMessage("The name should be atleast 5 chars long"),
   check("email")
     .isEmail()

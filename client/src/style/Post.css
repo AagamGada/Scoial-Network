@@ -65,6 +65,7 @@
 .postComment{
     border: none;
     width: 100%;
+    outline: none;
 }
 .comments{
     display: flex;
@@ -76,7 +77,19 @@
     font-size: large;
     padding-right: 5%;
     font-weight: bold;
+    outline: none;
 }
 .commentButton:hover{
     color: #3f51b5;
+}
+.dropDown{
+    background: wheat;
+    padding: 0.6em;
+    position: absolute;
+    margin: 0.2em;
+    cursor: pointer;
+}
+ul{
+    margin-bottom: 0.1em !important;
+    list-style: none;
 }

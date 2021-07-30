@@ -17,16 +17,16 @@ const UserProvider = (props) => {
           dispatch({ type: "FETCH_USER", payload: data.user });
           // history.push("/");
         }
-        else{
-          history.push("/login")
-        }
-        // if(!state.authenticated){
-        //   history.push("/login")
-        // }
+        
       } catch (err) {
         dispatch({ type: "USER_ERROR", payload: err.response?.data });
+        history.push("/login")
       }
     }
+    // let accessToken = localStorage.getItem("auth-token");
+    // if(!state.authenticated || !accessToken){
+    //   history.push("/login")
+    // }
     fetchUser();
   }, []);
 

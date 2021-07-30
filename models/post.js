@@ -13,10 +13,14 @@ const postSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User"
         },
-        likes: {
-            type: Array,
-            default: [],
-        },
+        likes: [
+            {
+              user: {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+              },
+            },
+          ],
         // comments: {
         //     type: Array,
         //     default: [],

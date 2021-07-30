@@ -8,21 +8,34 @@ const EditProfile = ({ setOpen }) => {
   const { userState, userDispatch } = useContext(UserContext);
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
+  const [file, setFile] = useState(null);
 
   const [updatedValues, setUpdatedValues] = useState({
-    name: "",
-    city: "",
-    bio: "",
-    gender: "",
-    image: "",
+    name: userState.user?.name,
+    city: userState.user?.city || "",
+    bio: userState.user?.bio || "",
+    gender: userState.user?.gender || "",
   });
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+    if (file) {
+      const fileData = new FormData();
+      console.log(file)
+      var fileName = file.name;
+      console.log(fileName);
+      fileData.append("profile", file);
+      fileData.append("name", fileName);
+      try {
+        await axios.post("/api/user/upload", fileData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
     try {
-      const { data } = await axios.put("/api/user/update", updatedValues);
+      const { data } = await axios.put("/api/user/update", {updatedValues, image: `http://localhost:5000/images/${fileName}`})
+      console.log(data)
       userDispatch({ type: "UPDATE_USER", payload: data });
       enqueueSnackbar("Profile Updated Successfully", { variant: "success" });
-      history.push("/profile");
       setOpen(false);
     } catch (err) {
       console.log(err);
@@ -48,7 +61,7 @@ const EditProfile = ({ setOpen }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="info_avatar">
-            <img src="" alt="avatar" />
+            <img src={userState.user?.image} />
             <span>
               <i className="fas fa-camera" />
               <p>Change</p>
@@ -57,9 +70,17 @@ const EditProfile = ({ setOpen }) => {
                 name="image"
                 id="file_up"
                 accept="image/*"
-                onChange={handleChangeInput}
-                value={updatedValues.image}
+                onChange={(e) => setFile(e.target.files[0])}
+                // value={updatedValues.image}
               />
+              {/* <input
+                type="file"
+                id="file"
+                name="image"
+                accept=".png,.jpeg,.jpg"
+                onChange={(e) => setFile(e.target.files[0])}
+                value={file}
+              /> */}
             </span>
           </div>
           <div className="form-group">
@@ -94,16 +115,6 @@ const EditProfile = ({ setOpen }) => {
               value={updatedValues.city}
             />
           </div>
-          {/* <div className="form-group">
-                    <label htmlFor="address">Address</label>
-                    <input type="text" name="address"
-                    className="form-control"  />
-                </div> */}
-          {/* <div className="form-group">
-                    <label htmlFor="website">Website</label>
-                    <input type="text" name="website" 
-                    className="form-control"  />
-                </div> */}
           <div className="form-group">
             <label htmlFor="Bio">Bio</label>
             <textarea
@@ -114,9 +125,6 @@ const EditProfile = ({ setOpen }) => {
               onChange={handleChangeInput}
               value={updatedValues.bio}
             />
-            {/* <small className="text-danger d-block text-right">
-                       Hello world
-                    </small> */}
           </div>
           <label htmlFor="gender">Gender</label>
           <div className="input-group-prepend px-0 mb-4">

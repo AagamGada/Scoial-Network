@@ -33,10 +33,6 @@ const Register = () => {
             enqueueSnackbar("Registered Successfully", { variant: "success" });
             history.push("/")
         } catch (err) {
-            // userDispatch({ type: "USER_ERROR", payload: err.response.data.error });
-            // userState.error?.forEach((data) => {
-            //   enqueueSnackbar(data, { variant: "error" });
-            // });
             console.log(err);
         }
       };
@@ -61,17 +57,6 @@ const Register = () => {
                         {alert.fullname ? alert.fullname : ''}
                     </small>
                 </div>
-
-                {/* <div className="form-group">
-                    <label htmlFor="username">User Name</label>
-                    <input type="text" className="form-control" id="username" name="username"
-                    onChange={handleChangeInput}
-                    style={{background: `${alert.username ? '#fd2d6a14' : ''}`}} />
-                    
-                    <small className="form-text text-danger">
-                        {alert.username ? alert.username : ''}
-                    </small>
-                </div> */}
 
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>

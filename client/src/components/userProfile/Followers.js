@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import UserCard from "./UserCard";
-import FollowBtn from "../profile/FollowBtn";
 import axios from "../../utils/axios";
 import { useParams } from "react-router";
 const Followers = ({ setShowFollowers }) => {
@@ -12,6 +11,7 @@ const Followers = ({ setShowFollowers }) => {
       const userId = params.userId;
       console.log(userId);
       const { data } = await axios.get(`/api/user/followers/${userId}`);
+      setAllFollowers(data);
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -26,10 +26,8 @@ const Followers = ({ setShowFollowers }) => {
         <h5 className="text-center">Followers</h5>
         <hr />
         <div className="follow_content">
-          <UserCard setShowFollowers={setShowFollowers}>
-            <FollowBtn />
+          <UserCard setShowFollowers={setShowFollowers} allFollowers={allFollowers}>
           </UserCard>
-          {/* <FollowBtn /> */}
         </div>
         <div className="close" onClick={() => setShowFollowers(false)}>
           &times;

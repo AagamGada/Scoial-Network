@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "../utils/axios";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { PinDropSharp } from "@material-ui/icons";
+import LikesCard from "./LikesCard"
 export default function Post(props) {
   const { postState, postDispatch } = useContext(PostContext);
   const { userState, userDispatch } = useContext(UserContext);
@@ -15,6 +15,8 @@ export default function Post(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [comment, setComment] = useState("");
   const [isLike, setIsLike] = useState(false);
+  const [allLikes, setAllLikes] = useState([]);
+  const [showLikes, setShowLikes] = useState(false);
   async function getAllComments() {
     try {
       const { data } = await axios.get(`/api/comment/${props.post._id}`);
@@ -24,8 +26,26 @@ export default function Post(props) {
       console.log(err);
     }
   }
-
+  async function getAllPost() {
+    try {
+      const { data } = await axios.get("/api/post");
+      postDispatch({ type: "POSTS_LOADED", payload: data });
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async function getAllLikes() {
+    try {
+      const { data } = await axios.get(`/api/post/getlikes/${props.post._id}`);
+      setAllLikes([data]);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   const handleComment = async (ev) => {
+    ev.preventDefault();
     try {
       if (comment === "") {
         return enqueueSnackbar("Empty Comment", { variant: "error" });
@@ -36,6 +56,7 @@ export default function Post(props) {
       postDispatch({ type: "POST_COMMENTS", payload: data });
       getAllComments();
       enqueueSnackbar("Posted Successfully", { variant: "success" });
+      setComment("")
     } catch (err) {
       console.log(err);
     }
@@ -47,24 +68,29 @@ export default function Post(props) {
       const { data } = await axios.put(`/api/post/likes/${props.post._id}`);
       postDispatch({ type: "POST_LOADED", payload: data });
       setIsLike(true);
-      if (props.post.likes.includes(userState.user._id)) {
+      let result = props.post?.likes.filter((item) => item.user === userState.user?._id);
+      if (result.length!==0) {
         setIsLike(false);
       }
+      getAllPost();
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
     getAllComments();
+    getAllLikes();
     return () => {
       postDispatch({ type: "COMMENTS_UNLOADED" });
+      postDispatch({ type: "POST_UNLOADED" });
     };
   }, []);
   let month = new Date(props.post.createdAt).toLocaleString("default", {
     month: "short",
   });
+  let result = props.post?.likes.filter((item) => item.user === userState.user?._id);
   let red =
-    props.post?.likes.includes(userState.user?._id) || isLike
+    (result.length !== 0) || isLike
       ? { htmlColor: "red" }
       : { htmlColor: "grey" };
   let day = new Date(props.post.createdAt).getDate();
@@ -77,24 +103,21 @@ export default function Post(props) {
             <span className="postUser">{props.post?.user.name}</span>
             <span className="postDate">{`${month} ${day}`}</span>
           </div>
-          <div className="postTopRight">
-            <MoreVert />
-          </div>
         </div>
         <div className="postCenter">
           <span className="text">{props.post.content}</span>
           {props.post.image && (
             <img src={props.post.image} alt="" className="postImg" />
           )}
-          {/* <img src="http://localhost:5000/images/cloudy.jpg" alt="" className="postImg" /> */}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
             <Favorite {...red} className="likeIcon" onClick={handleLike} />
-            <span className="postLikeCounter">
+            <span className="postLikeCounter" onClick={()=>{setShowLikes(true)}}>
               {props.post.likes.length} Likes
             </span>
           </div>
+          {showLikes && <LikesCard allLikes={allLikes} setShowLikes={setShowLikes}/>}
           <div className="postBottomRight">
             <Link to={`/post/${props.post._id}`}>
               <span className="postCommentText">

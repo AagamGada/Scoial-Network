@@ -5,35 +5,20 @@ import PersonImg from "../images/person1.jpg";
 import Comments from "..//components/Comments";
 import { MoreVert, Favorite, ThumbUpAlt } from "@material-ui/icons";
 import { PostContext } from "../context/PostContext";
+import { UserContext } from "../context/UserContext";
 import { useParams } from "react-router";
 import axios from "../utils/axios";
+import { useSnackbar } from "notistack";
 export default function SinglePost() {
   const params = useParams();
-  //   const { postState, postDispatch } = useContext(PostContext);
+  const { userState, userDispatch } = useContext(UserContext);
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    // const fetchPostAndComment = async () => {
-    //   try {
-    //     const postId = params.postId;
-    //     const [postdata, commentdata] = await Promise.all([
-    //       axios.get(`/api/post/${postId}`),
-    //       axios.get(`api/comment/${postId}`),
-    //     ]);
-    //     postDispatch({ type: "POST_LOADED", payload: postdata.data.post });
-    //     postDispatch({
-    //       type: "COMMENTS_LOADED",
-    //       payload: commentdata.data.comment,
-    //     });
-    //     console.log(postState.post);
-    //     console.log(postState.comments);
-    //   } catch (err) {
-    //     // blogDispatch({ type: "BLOG_ERROR", payload: "Internal Server Error" });
-    //     console.log(err);
-    //   }
-    // };
-    // fetchPostAndComment();
+  const [allComments, setAllComments] = useState(0);
+  const { enqueueSnackbar } = useSnackbar();
+  const { postState, postDispatch } = useContext(PostContext);
+  const [isLike, setIsLike] = useState(false);
+  const [comment, setComment] = useState("");
     const getPost = async () => {
       try {
         const postId = params.postId;
@@ -52,12 +37,55 @@ export default function SinglePost() {
         console.log(err);
       }
     };
+    const handleComment = async (ev) => {
+      ev.preventDefault();
+      try {
+        if (comment === "") {
+          return enqueueSnackbar("Empty Comment", { variant: "error" });
+        }
+        const postId = params.postId;
+        const { data } = await axios.post(`/api/comment/${postId}`, {
+          comment: comment,
+        });
+        postDispatch({ type: "POST_COMMENTS", payload: data });
+        getComments();
+        enqueueSnackbar("Posted Successfully", { variant: "success" });
+        setComment("")
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const handleLike = async (ev) => {
+      ev.preventDefault();
+      try {
+        const postId = params.postId;
+        const { data } = await axios.put(`/api/post/likes/${postId}`);
+        postDispatch({ type: "POST_LOADED", payload: data });
+        setIsLike(true);
+        if (post.likes.includes(userState.user._id)) {
+          setIsLike(false);
+        }
+        getPost();
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
+  useEffect(() => {
     getPost();
     getComments();
+    return () => {
+      postDispatch({ type: "COMMENTS_UNLOADED" });
+      postDispatch({ type: "POST_UNLOADED" });
+    };
   }, []);
   let month = new Date(post?.createdAt).toLocaleString("default", {
     month: "short",
   });
+  let red =
+    post?.likes.includes(userState.user?._id) || isLike
+      ? { htmlColor: "red" }
+      : { htmlColor: "grey" };
   let day = new Date(post?.createdAt).getDate();
   return (
     <div>
@@ -65,15 +93,12 @@ export default function SinglePost() {
     {console.log(comments)}
     <AppBar />
       <div className="singlePost" style={{ background: "white" }}>
-        <div className="postWrapper">
+        <div className="postWrapperSingle">
           <div className="postTop">
             <div className="postTopLeft">
               <img className="postTopImg" src={PersonImg} alt="" />
               <span className="postUser">{post?.user.name}</span>
               <span className="postDate">{`${month} ${day}`}</span>
-            </div>
-            <div className="postTopRight">
-              <MoreVert />
             </div>
           </div>
           <div className="postCenter">
@@ -82,26 +107,10 @@ export default function SinglePost() {
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
-              {/* {isLike ? (<>
-                      <Favorite htmlColor="red" className="likeIcon" onClick={handleLike} />
-                      <span className="postLikeCounter">{props.post.likes.length} Likes</span>
-                  </>)
-                      :
-                      (
-                          <>
-                              <Favorite htmlColor="grey" className="likeIcon" onClick={handleLike} />
-                              <span className="postLikeCounter">{props.post.likes.length} Likes</span>
-                          </>
-                      )} */}
-              <Favorite className="likeIcon" />
+            <Favorite {...red} className="likeIcon" onClick={handleLike} />
               <span className="postLikeCounter">
                 {post?.likes.length} Likes
-                {/* {console.log(postState.likes)} */}
-                {/* {console.log(allLikes)} */}
               </span>
-
-              {/* <Favorite htmlColor="grey" className="likeIcon" onClick={handleLike}/>
-                  <span className="postLikeCounter">{props.post.likes.length} likes</span> */}
             </div>
             <div className="postBottomRight">
               <span className="postCommentText">
@@ -109,37 +118,30 @@ export default function SinglePost() {
               </span>
             </div>
           </div>
-          {/* <hr class="solid" style={{borderTop: "1px solid black", maxWidth:"100%"}}></hr> */}
           <div className="comments">
             <input
               type="text"
               className="postComment"
               placeholder="Add a comment.."
-              //   onChange={(ev) => setComment(ev.target.value)}
+              onChange={(ev) => setComment(ev.target.value)}
+              value={comment}
             ></input>
             <button
               variant="contained"
               className="commentButton"
-              //   onClick={handleComment}
+              onClick={handleComment}
             >
               Post
             </button>
           </div>
         </div>
-        {/* {JSON.stringify(allComments)} */}
       </div>
       <h4 style={{ marginLeft: "20%" }} className="postComments">
         Post Comments
       </h4>
-      {/* <Comments />
-      <Comments />
-      <Comments />
-      <Comments /> */}
       {comments[0]?.slice(0).map((comment) => {
         return <Comments comment={comment} key={comment._id} />;
       })}
-
-      {/* {console.log(postState.comments)} */}
     </div>
   );
 }

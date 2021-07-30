@@ -269,6 +269,7 @@ img{
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  margin-top: 10%;
 }
 .info_content{
   min-width: 250px;
@@ -421,4 +422,10 @@ img{
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
   opacity: 0.8;
+}
+
+@media only screen and (max-width: 600px) {
+  .info_container{
+    margin-top: 15%;
+  }
 }

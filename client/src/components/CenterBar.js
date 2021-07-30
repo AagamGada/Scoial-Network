@@ -11,32 +11,27 @@ export default function CenterBar() {
   const { postState, postDispatch } = useContext(PostContext);
   const [allPost, setAllPost] = useState(0);
   const [emoji, setEmoji] = useState(false);
-  const [post, setPost] = useState();
+  const [post, setPost] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
-
   const handleEmoji = (emoji) => {
     setPost((prev) => prev + emoji);
   };
+  console.log(post);
   async function getAllPost() {
     try {
       const { data } = await axios.get("/api/post");
       postDispatch({ type: "POSTS_LOADED", payload: data });
       console.log(data);
-      setAllPost(
-        data.sort((a, b) => {
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        })
-      );
+      // setAllPost(
+      //   data.sort((a, b) => {
+      //     return new Date(b.createdAt) - new Date(a.createdAt);
+      //   })
+      // );
     } catch (err) {
       console.log(err);
     }
   }
-  // const handleChange=(ev)=>{
-  //     setPost((prev)=>({
-  //         ...prev,[ev.target.name]:ev.target.value,
-  //     }));
-  // }
   const handlePost = async (ev) => {
     ev.preventDefault();
     if (file) {
@@ -45,7 +40,6 @@ export default function CenterBar() {
       console.log(fileName);
       fileData.append("profile", file);
       fileData.append("name", fileName);
-      // post.image=fileName;
       try {
         await axios.post("/api/user/upload", fileData);
       } catch (err) {
@@ -63,13 +57,19 @@ export default function CenterBar() {
       });
       postDispatch({ type: "ADD_POST", payload: data });
       enqueueSnackbar("Posted Successfully", { variant: "success" });
+      setPost("");
       getAllPost();
     } catch (err) {
-      // postDispatch({ type: "USER_ERROR", payload: err.response.data.error });
-      //   enqueueSnackbar("error", { variant: "error" });
       console.log(err);
     }
   };
+  const openClose = () => {
+    if(!emoji){
+      setEmoji(true);
+    }else{
+      setEmoji(false);
+    }
+  }
   useEffect(() => {
     getAllPost();
     return () => {
@@ -77,6 +77,7 @@ export default function CenterBar() {
       postDispatch({ type: "POSTS_UNLOADED" });
     };
   }, []);
+
   return (
     <div className="CenterBar">
       <div className="centerWrapper">
@@ -98,7 +99,6 @@ export default function CenterBar() {
                 <div className="options">
                   <label htmlFor="file" className="options">
                     <PermMedia htmlColor="tomato" className="icon" />
-                    {/* <span className="optionText">Photo or Video</span> */}
                     <input
                       type="file"
                       id="file"
@@ -108,26 +108,14 @@ export default function CenterBar() {
                     />
                   </label>
                 </div>
-                {/* <div className="options">
-                                    <Label htmlColor="blue" className="icon" />
-                                    <span className="optionText">Tag</span>
-                                </div>
-                                <div className="options">
-                                    <Room htmlColor="green" className="icon" />
-                                    <span className="optionText">Loaction</span>
-                                </div> */}
                 <div className="options">
                   <EmojiEmotions
                     htmlColor="goldenrod"
                     className="icon"
-                    onClick={() => {
-                      setEmoji(true);
-                    }}
+                    onClick={openClose}
                   />
-                  {/* <span className="optionText">Feelings</span> */}
                 </div>
               </div>
-
               <button
                 className="postButton"
                 onClick={handlePost}
