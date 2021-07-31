@@ -17,15 +17,18 @@ const userSchema = new Schema(
     },
     image: {
       type: String,
+      default: "http://localhost:5000/images/profileImage.jpg"
     },
     gender: {
       type: String,
     },
     city: {
       type: String,
+      default: "",
     },
     bio: {
       type: String,
+      default: "",
     },
     isVerified: {
       type: Boolean,

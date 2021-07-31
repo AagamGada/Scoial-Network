@@ -70,6 +70,7 @@ export default function CenterBar() {
       setEmoji(false);
     }
   }
+
   useEffect(() => {
     getAllPost();
     return () => {

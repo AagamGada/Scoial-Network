@@ -45,7 +45,8 @@ const Register = () => {
     return (
         <div className="auth_page">
             <form onSubmit={handleSubmit}>
-                <h3 className="text-uppercase text-center mb-4">Socail Network</h3>
+                <h3 className="text-uppercase text-center mb-4">Welcome to</h3>
+                <h4 className="text-uppercase text-center mb-4">Socail-Network</h4>
 
                 <div className="form-group">
                     <label htmlFor="fullname">Full Name</label>
@@ -98,30 +99,13 @@ const Register = () => {
 
                     </div>
                 </div>
-
-                <div className="row justify-content-between mx-0 mb-1">
-                    <label htmlFor="male">
-                        Male: <input type="radio" id="male" name="gender"
-                        value="male" defaultChecked onChange={handleChangeInput} />
-                    </label>
-
-                    <label htmlFor="female">
-                        Female: <input type="radio" id="female" name="gender"
-                        value="female" onChange={handleChangeInput} />
-                    </label>
-
-                    <label htmlFor="other">
-                        Other: <input type="radio" id="other" name="gender"
-                        value="other" onChange={handleChangeInput} />
-                    </label>
-                </div>
                 
                 <button type="submit" className="btn btn-dark w-100">
                     Register
                 </button>
 
                 <p className="my-2">
-                    Already have an account? <Link to="/" style={{color: "crimson"}}>Login Now</Link>
+                    Already have an account? <Link to="/login" style={{color: "crimson"}}>Login Now</Link>
                 </p>
             </form>
         </div>

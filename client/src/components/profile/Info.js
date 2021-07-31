@@ -17,7 +17,7 @@ const Info = () => {
     <div className="info">
       {console.log(userState.user)}
       <div className="info_container">
-        {userState.user?.image ? <img src={userState.user?.image} className="supper-avatar" />: <img src={profileImage} className="supper-avatar" />}
+        <img src={userState.user?.image} className="supper-avatar" />
         <div className="info_content">
           <div className="info_content_title">
             <h2>{userState.user?.name}</h2>
@@ -27,10 +27,10 @@ const Info = () => {
           </div>
           <div className="follow_btn">
             <span className="mr-4" onClick={() => setShowFollowers(true)}>
-              {userState.user?.followers.length} Followers
+              {userState?.user?.followers?.length} Followers
             </span>
             <span className="ml-4" onClick={() => setShowFollowing(true)}>
-              {userState.user?.following.length} Following
+              {userState.user?.following?.length} Following
             </span>
           </div>
           <h6>

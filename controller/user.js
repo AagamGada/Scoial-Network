@@ -7,7 +7,7 @@ const { validationResult } = require("express-validator");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-const createAccessToken = (payload, expiresIn = "1h") => {
+const createAccessToken = (payload, expiresIn = "365d") => {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
 };
 
@@ -43,6 +43,7 @@ module.exports = {
         city: user.city,
         bio: user.bio,
         image: user.image,
+        gender: user.gender,
       };
 
       let accessToken = createAccessToken(payload);
@@ -66,6 +67,7 @@ module.exports = {
     try {
       const user = await User.findById(req.params.userId, { password: 0 });
       res.status(200).send(user);
+      console.log(user);
     } catch (err) {
       res.status(500).send("Internal Server Error");
       console.log(err);
@@ -97,6 +99,7 @@ module.exports = {
           city: user.city,
           bio: user.bio,
           image: user.image,
+          gender: user.gender,
         };
         let accessToken = createAccessToken(payload);
 
@@ -129,7 +132,6 @@ module.exports = {
     }
   },
   async updateUser(req, res) {
-    // console.log("hih")
     try {
       const userId = req.user._id;
       const user = await User.findOneAndUpdate(
@@ -144,7 +146,21 @@ module.exports = {
           },
         }
       );
-      res.status(200).send(user);
+      let payload = {
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        isVerified: user.isVerified,
+        followers: user.followers,
+        following: user.following,
+        city: user.city,
+        bio: user.bio,
+        image: user.image,
+        gender: user.gender,
+      };
+      let accessToken = createAccessToken(payload);
+
+      return res.status(200).json({ payload, accessToken });
     } catch (err) {
       res.status(500).send("Internal Server Error");
       console.log(err);

@@ -9,7 +9,6 @@ const EditProfile = ({ setOpen }) => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
-
   const [updatedValues, setUpdatedValues] = useState({
     name: userState.user?.name,
     city: userState.user?.city || "",
@@ -31,18 +30,29 @@ const EditProfile = ({ setOpen }) => {
         console.log(err);
       }
     }
+    var profileImage;
+    if(fileName === undefined){
+      profileImage = userState.user.image;
+    }else{
+      profileImage = `http://localhost:5000/images/${fileName}`;
+    }
     try {
-      const { data } = await axios.put("/api/user/update", {updatedValues, image: `http://localhost:5000/images/${fileName}`})
+      const { data } = await axios.put("/api/user/update", {...updatedValues, image: profileImage})
       console.log(data)
+      localStorage.removeItem("auth-token");
+      let accessToken=data.accessToken;
+      localStorage.setItem("auth-token",accessToken);
       userDispatch({ type: "UPDATE_USER", payload: data });
       enqueueSnackbar("Profile Updated Successfully", { variant: "success" });
       setOpen(false);
+      window.location.reload();
     } catch (err) {
       console.log(err);
-      userDispatch({ type: "USER_ERROR", payload: err.response.data.msg });
+      // userDispatch({ type: "USER_ERROR", payload: err.response.data.msg });
       enqueueSnackbar("Invalid credentials", { variant: "error" });
     }
   };
+  console.log(userState.user)
   const handleChangeInput = (ev) => {
     setUpdatedValues((prev) => ({
       ...prev,
@@ -54,12 +64,13 @@ const EditProfile = ({ setOpen }) => {
       <div className="edit_profile">
         <button
           className="btn btn-danger btn_close"
+          style={{marginTop: "10%"}}
           onClick={() => setOpen(false)}
         >
           Close
         </button>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{marginTop: "5%"}}>
           <div className="info_avatar">
             <img src={userState.user?.image} />
             <span>
@@ -71,16 +82,7 @@ const EditProfile = ({ setOpen }) => {
                 id="file_up"
                 accept="image/*"
                 onChange={(e) => setFile(e.target.files[0])}
-                // value={updatedValues.image}
               />
-              {/* <input
-                type="file"
-                id="file"
-                name="image"
-                accept=".png,.jpeg,.jpg"
-                onChange={(e) => setFile(e.target.files[0])}
-                value={file}
-              /> */}
             </span>
           </div>
           <div className="form-group">

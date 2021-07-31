@@ -13,18 +13,21 @@ const LikesCard = ({ setShowLikes, allLikes }) => {
           <div className="d-flex p-2  w-100 card">
             <div>
               <div onClick={handleCloseAll}>
-                {/* {allFollowers?.slice(0).map((followers) => {
-            // return <UserPosts post={post} key={post._id} />;
-            return (
-              <div className="d-flex align-items-center mt-3 ">
-                <img src={followers.user.image} className="big-avatar" />
-                <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
-                  <span className="d-block">{followers.user.name}</span>
-                  <small style={{ opacity: 0.7 }}></small>
-                </div>
-              </div>
-            );
-          })} */}
+                {allLikes[0]?.slice(0).map((likes) => {
+                  // return <UserPosts post={post} key={post._id} />;
+                  return (
+                    <div className="d-flex align-items-center mt-3 ">
+                      <img src={likes.user.image} className="big-avatar" />
+                      <div
+                        className="ml-1"
+                        style={{ transform: "translateY(-2px)" }}
+                      >
+                        <span className="d-block">{likes.user.name}</span>
+                        <small style={{ opacity: 0.7 }}></small>
+                      </div>
+                    </div>
+                  );
+                })}
                 {console.log(allLikes)}
               </div>
             </div>

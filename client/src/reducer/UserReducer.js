@@ -1,13 +1,3 @@
-// import {
-//     LOGIN_USER,
-//     LOGOUT_USER,
-//     FETCH_USER,
-//     DELETE_USER,
-//     REGISTER_USER,
-//     UPDATE_USER,
-//     USER_ERROR,
-//   } from "./constants";
-
 const initialState = {
   users: [],
   user: null,

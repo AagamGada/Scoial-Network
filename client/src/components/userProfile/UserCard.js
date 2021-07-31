@@ -11,15 +11,12 @@ const UserCard = ({
     if (setShowFollowers) setShowFollowers(false);
     if (setShowFollowing) setShowFollowing(false);
   };
-  console.log(allFollowers);
   return (
     <div className="d-flex p-2  w-100 card">
       <div>
         <div onClick={handleCloseAll}>
-          {console.log(allFollowers)}
           {allFollowers?.slice(0).map((followers) => {
             // return <UserPosts post={post} key={post._id} />;
-            console.log(followers.user)
             return (
               <Link to={`/userProfile/${followers.user._id}`}>
               <div className="d-flex align-items-center mt-3 ">
@@ -35,7 +32,7 @@ const UserCard = ({
           {allFollowing?.slice(0).map((following) => {
             // return <UserPosts post={post} key={post._id} />;
             return (
-              <Link to={`/userProfile/${following.user}`}>
+              <Link to={`/userProfile/${following.user._id}`}>
               <div className="d-flex align-items-center mt-3 ">
                 <img src={following.user.image} className="big-avatar" />
                 <div className="ml-1" style={{ transform: "translateY(-2px)" }}>

@@ -15,9 +15,11 @@ module.exports = {
   },
   async getPersonalPost(req, res) {
     try {
-      const post = await Post.find({ user: req.user._id }).populate("user", {
-        name: 1,
-      }).sort({ createdAt: -1 });;
+      const post = await Post.find({ user: req.user._id })
+        .populate("user", {
+          name: 1,
+        })
+        .sort({ createdAt: -1 });
       res.status(200).send(post);
     } catch (err) {
       res.status(500).send("Internal Server Error");
@@ -51,8 +53,9 @@ module.exports = {
   },
   async getUserPost(req, res) {
     try {
-      const post = await Post.find({ user: req.params.userId }).populate(
-        "user",{ name: 1 }).sort({ createdAt: -1 });;
+      const post = await Post.find({ user: req.params.userId })
+        .populate("user", { name: 1 })
+        .sort({ createdAt: -1 });
       res.status(200).send(post);
     } catch (err) {
       res.status(500).send("Internal Server Error");
@@ -96,19 +99,12 @@ module.exports = {
     try {
       const post = await Post.findById(req.params.id);
       const userId = req.user._id;
-      console.log(userId)
-      let result = post.likes.filter((item) => item.user === userId);
-      console.log(post.likes, "hello")
-      if(userId !== post.likes[0].user){
-        console.log("does not exsig")
-      }
-      console.log(result.length);
+      let result = post.likes.filter(item => item.user == userId);
       if (result.length !== 0) {
-        await post.updateOne({ $push: { likes: {user: req.user._id} } });
+        await post.updateOne({ $pull: { likes: { user: userId } } });
         res.status(200).send(post);
-      } 
-      else {
-        await post.updateOne({ $pull: { likes: {user: req.user._id} } });
+      }else{
+        await post.updateOne({ $push: { likes: { user: userId } } });
         res.status(200).send(post);
       }
     } catch (err) {
@@ -117,11 +113,14 @@ module.exports = {
   },
   async getAllLikes(req, res) {
     try {
-      console.log("hi")
-      const post = await Post.findById(req.params.postId).populate("likes.user", {
-        name: 1,
-        image: 1,
-      });
+      console.log("hi");
+      const post = await Post.findById(req.params.postId).populate(
+        "likes.user",
+        {
+          name: 1,
+          image: 1,
+        }
+      );
       res.status(200).send(post.likes);
     } catch (err) {
       console.log(err);

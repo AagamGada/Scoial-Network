@@ -11,7 +11,7 @@ export default function CenterBar() {
   const { postState, postDispatch } = useContext(PostContext);
   const { userState, userDispatch } = useContext(UserContext);
   const [emoji, setEmoji] = useState(false);
-  const [post, setPost] = useState();
+  const [post, setPost] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
 

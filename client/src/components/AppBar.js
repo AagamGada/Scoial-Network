@@ -121,8 +121,8 @@ export default function PrimarySearchAppBar() {
 
   const Logout = () => {
     localStorage.removeItem("auth-token");
-    history.push("/");
-    window.location.reload();
+    userDispatch({type:"LOGOUT_USER"});
+    history.push("/login")
   };
 
   async function getAllUsers() {
