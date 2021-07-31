@@ -22,7 +22,7 @@ const Login = () => {
             let accessToken=data.accessToken;
             localStorage.setItem("auth-token",accessToken);
             enqueueSnackbar("Logged in Successfully",{variant:"success"})
-            history.push("/")
+            history.push("/home")
         }catch(err){
             console.log(err);
             enqueueSnackbar("Invalid login credentials",{variant:"error"})
@@ -35,7 +35,7 @@ const Login = () => {
     }
      useEffect(() => {
         if (userState.authenticated) {
-            history.push("/");
+            history.push("/home");
         }
     }, [])
 

@@ -16,9 +16,6 @@ const UserProvider = (props) => {
           const { data } = await axios.get("/api/user/fetch");
           dispatch({ type: "FETCH_USER", payload: data.user });
           // history.push("/");
-          console.log(data);
-          console.log(data.user);
-          console.log(state.user)
         }
       } catch (err) {
         dispatch({ type: "USER_ERROR", payload: err.response?.data });

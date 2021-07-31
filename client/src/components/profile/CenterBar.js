@@ -75,7 +75,7 @@ export default function CenterBar() {
   return (
     <div className="CenterBar">
       <div className="centerWrapper">
-        <div className="share" style={{ background: "white" }}>
+        <div className="sharePersonal" style={{ background: "white" }}>
           <div className="shareWrapper">
             <div className="shareTop">
               <img className="shareProfileImg" src={userState.user?.image} alt="" />

@@ -52,13 +52,13 @@ const Info = () => {
     };
   }, [params.userId]);
   var follow = user?.followers?.filter(
-    (val) => val.user === userState.user._id
+    (val) => val.user === userState?.user._id
   );
   return (
     <div className="info">
       <div className="info_container">
         <img
-          src="http://localhost:5000/images/person1.jpg"
+          src={user?.image}
           className="supper-avatar"
         />
         <div className="info_content">

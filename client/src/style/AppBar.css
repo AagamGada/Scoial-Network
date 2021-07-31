@@ -20,7 +20,11 @@
     width: 100%;
     background:whitesmoke;
     top: 64px;
+    z-index: 1;
     /* left: 240px; */
+}
+button{
+    outline: none !important;
 }
 
 .userLine{

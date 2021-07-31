@@ -7,7 +7,7 @@ import '../style/Register.css'
 const Register = () => {
     useEffect(() => {
         if (userState.authenticated) {
-            history.push("/");
+            history.push("/home");
         }
     }, [])
     const { enqueueSnackbar } = useSnackbar();
@@ -31,7 +31,7 @@ const Register = () => {
             userDispatch({ type: "REGISTER_USER", payload: data.payload });
 
             enqueueSnackbar("Registered Successfully", { variant: "success" });
-            history.push("/")
+            history.push("/home")
         } catch (err) {
             console.log(err);
         }

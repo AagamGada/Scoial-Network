@@ -9,6 +9,7 @@ import { UserContext } from "../context/UserContext";
 import { useParams } from "react-router";
 import axios from "../utils/axios";
 import { useSnackbar } from "notistack";
+import LikesCard from "./LikesCard";
 export default function SinglePost() {
   const params = useParams();
   const { userState, userDispatch } = useContext(UserContext);
@@ -19,6 +20,8 @@ export default function SinglePost() {
   const { postState, postDispatch } = useContext(PostContext);
   const [isLike, setIsLike] = useState(false);
   const [comment, setComment] = useState("");
+  const [allLikes, setAllLikes] = useState([]);
+  const [showLikes, setShowLikes] = useState(false);
     const getPost = async () => {
       try {
         const postId = params.postId;
@@ -33,6 +36,31 @@ export default function SinglePost() {
         const postId = params.postId;
         const data = await axios.get(`/api/comment/${postId}`);
         setComments([data.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    async function getAllLikes() {
+      try {
+        const { data } = await axios.get(`/api/post/getlikes/${params.postId}`);
+        setAllLikes([data]);
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    const handleLike = async (ev) => {
+      ev.preventDefault();
+      try {
+        const { data } = await axios.put(`/api/post/likes/${params.postId}`);
+        postDispatch({ type: "POST_LOADED", payload: data });
+        setIsLike(true);
+        let result = post?.likes.filter((item) => item.user === userState.user?._id);
+        if (result.length!==0) {
+          setIsLike(false);
+        }
+        getPost();
+        getAllLikes();
       } catch (err) {
         console.log(err);
       }
@@ -55,25 +83,10 @@ export default function SinglePost() {
         console.log(err);
       }
     };
-    const handleLike = async (ev) => {
-      ev.preventDefault();
-      try {
-        const postId = params.postId;
-        const { data } = await axios.put(`/api/post/likes/${postId}`);
-        postDispatch({ type: "POST_LOADED", payload: data });
-        setIsLike(true);
-        if (post.likes.includes(userState.user._id)) {
-          setIsLike(false);
-        }
-        getPost();
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    
   useEffect(() => {
     getPost();
     getComments();
+    getAllLikes();
     return () => {
       postDispatch({ type: "COMMENTS_UNLOADED" });
       postDispatch({ type: "POST_UNLOADED" });
@@ -82,32 +95,34 @@ export default function SinglePost() {
   let month = new Date(post?.createdAt).toLocaleString("default", {
     month: "short",
   });
+  let result = allLikes[0]?.filter((item) => item.user._id === userState.user?._id);
   let red =
-    post?.likes.includes(userState.user?._id) || isLike
+    (result?.length !== 0) || isLike
       ? { htmlColor: "red" }
       : { htmlColor: "grey" };
   let day = new Date(post?.createdAt).getDate();
   return (
     <div>
-    {console.log(post)}
-    {console.log(comments)}
     <AppBar />
       <div className="singlePost" style={{ background: "white" }}>
         <div className="postWrapperSingle">
           <div className="postTop">
             <div className="postTopLeft">
-              <img className="postTopImg" src={PersonImg} alt="" />
+              <img className="postTopImg" src={post?.user.image} alt="" />
               <span className="postUser">{post?.user.name}</span>
               <span className="postDate">{`${month} ${day}`}</span>
             </div>
           </div>
           <div className="postCenter">
             <span className="text">{post?.content}</span>
-            <img src={PersonImg} alt="" className="postImg" />
+            {post?.image && (
+            <img src={post?.image} alt="" className="postImg" />
+          )}
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
             <Favorite {...red} className="likeIcon" onClick={handleLike} />
+            {showLikes && <LikesCard allLikes={allLikes} setShowLikes={setShowLikes}/>}
               <span className="postLikeCounter">
                 {post?.likes.length} Likes
               </span>

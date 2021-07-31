@@ -73,6 +73,7 @@ export default function Post(props) {
         setIsLike(false);
       }
       getAllPost();
+      getAllLikes();
     } catch (err) {
       console.log(err);
     }
@@ -99,7 +100,7 @@ export default function Post(props) {
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img className="postTopImg" src={PersonImg} alt="" />
+            <img className="postTopImg" src={props.post?.user.image} alt="" />
             <span className="postUser">{props.post?.user.name}</span>
             <span className="postDate">{`${month} ${day}`}</span>
           </div>

@@ -17,6 +17,7 @@ import axios from "../utils/axios";
 import PersonImg from "../images/person1.jpg";
 import "../style/AppBar.css";
 import HomeIcon from "@material-ui/icons/Home";
+import Icon from "../images/icon.png"
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -122,7 +123,7 @@ export default function PrimarySearchAppBar() {
   const Logout = () => {
     localStorage.removeItem("auth-token");
     userDispatch({type:"LOGOUT_USER"});
-    history.push("/login")
+    history.push("/")
   };
 
   async function getAllUsers() {
@@ -198,6 +199,14 @@ export default function PrimarySearchAppBar() {
         <AppBar position="fixed" className={classes.topBar}>
           <Container maxWidth="md">
             <Toolbar>
+            <IconButton
+            edge="start"
+
+            color="inherit"
+            aria-label="open drawer"
+          >
+            <img src={Icon}></img>
+          </IconButton>
               <Typography className={classes.title} variant="h6" noWrap>
                 Social Network
               </Typography>
@@ -222,7 +231,7 @@ export default function PrimarySearchAppBar() {
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <HomeIcon
                     onClick={() => {
-                      history.push("/");
+                      history.push("/home");
                     }}
                   />
                 </IconButton>

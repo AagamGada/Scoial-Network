@@ -6,14 +6,17 @@ import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 import { PostContext } from "../context/PostContext";
 import axios from "../utils/axios";
 import { useSnackbar } from "notistack";
+import { UserContext } from "../context/UserContext";
 import Emoji from "./Emoji";
 export default function CenterBar() {
   const { postState, postDispatch } = useContext(PostContext);
+  const { userState } = useContext(UserContext);
   const [allPost, setAllPost] = useState(0);
   const [emoji, setEmoji] = useState(false);
   const [post, setPost] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
+  const [showImage, setShowImage] = useState(false);
   const handleEmoji = (emoji) => {
     setPost((prev) => prev + emoji);
   };
@@ -23,11 +26,6 @@ export default function CenterBar() {
       const { data } = await axios.get("/api/post");
       postDispatch({ type: "POSTS_LOADED", payload: data });
       console.log(data);
-      // setAllPost(
-      //   data.sort((a, b) => {
-      //     return new Date(b.createdAt) - new Date(a.createdAt);
-      //   })
-      // );
     } catch (err) {
       console.log(err);
     }
@@ -71,6 +69,11 @@ export default function CenterBar() {
     }
   }
 
+  const handleChangeInput=(ev)=>{
+    setFile(ev.target.files[0]);
+    setShowImage(true);
+}
+
   useEffect(() => {
     getAllPost();
     return () => {
@@ -85,7 +88,7 @@ export default function CenterBar() {
         <div className="share" style={{ background: "white" }}>
           <div className="shareWrapper">
             <div className="shareTop">
-              <img className="shareProfileImg" src={PersonImg} alt="" />
+              <img className="shareProfileImg" src={userState.user?.image} alt="" />
               <input
                 type="text"
                 className="shareInput"
@@ -104,11 +107,13 @@ export default function CenterBar() {
                       type="file"
                       id="file"
                       accept=".png,.jpeg,.jpg"
-                      onChange={(e) => setFile(e.target.files[0])}
+                      onChange={handleChangeInput}
                       style={{ display: "none" }}
                     />
                   </label>
+                  {/* {showImage && <img className="photoContainer" src={`http://localhost:5000/images/${file.name}`}></img>} */}
                 </div>
+                {/* {showImage && <div className="photoContainer">{file?.name}</div>} */}
                 <div className="options">
                   <EmojiEmotions
                     htmlColor="goldenrod"

@@ -6,6 +6,7 @@ import { UserContext } from "../../context/UserContext";
 import axios from "../../utils/axios";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import LikesCard from "../LikesCard";
 export default function Post(props) {
   const { postState, postDispatch } = useContext(PostContext);
   const { userState, userDispatch } = useContext(UserContext);
@@ -14,6 +15,8 @@ export default function Post(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [comment, setComment] = useState("");
   const [isLike, setIsLike] = useState(false);
+  const [allLikes, setAllLikes] = useState([]);
+  const [showLikes, setShowLikes] = useState(false);
   async function getPersonalPost() {
     try {
       const { data } = await axios.get("/api/post/personalPost");
@@ -28,6 +31,16 @@ export default function Post(props) {
       const { data } = await axios.get(`/api/comment/${props.post._id}`);
       postDispatch({ type: "COMMENTS_LOADED", payload: data });
       setAllComments(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function getAllLikes() {
+    try {
+      const { data } = await axios.get(`/api/post/getlikes/${props.post._id}`);
+      setAllLikes([data]);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -49,16 +62,34 @@ export default function Post(props) {
       console.log(err);
     }
   };
+  // const handleLike = async (ev) => {
+  //   ev.preventDefault();
+  //   try {
+  //     const { data } = await axios.put(`/api/post/likes/${props.post._id}`);
+  //     postDispatch({ type: "POST_LOADED", payload: data });
+  //     setIsLike(true);
+  //     if (props.post.likes.includes(userState.user._id)) {
+  //       setIsLike(false);
+  //     }
+  //     getPersonalPost();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   const handleLike = async (ev) => {
     ev.preventDefault();
     try {
       const { data } = await axios.put(`/api/post/likes/${props.post._id}`);
       postDispatch({ type: "POST_LOADED", payload: data });
       setIsLike(true);
-      if (props.post.likes.includes(userState.user._id)) {
+      let result = props.post?.likes.filter(
+        (item) => item.user === userState.user?._id
+      );
+      if (result.length !== 0) {
         setIsLike(false);
       }
       getPersonalPost();
+      getAllLikes();
     } catch (err) {
       console.log(err);
     }
@@ -81,6 +112,7 @@ export default function Post(props) {
   };
   useEffect(() => {
     getAllComments();
+    getAllLikes();
     return () => {
       postDispatch({ type: "COMMENTS_UNLOADED" });
     };
@@ -88,8 +120,11 @@ export default function Post(props) {
   let month = new Date(props.post.createdAt).toLocaleString("default", {
     month: "short",
   });
+  let result = props.post?.likes.filter(
+    (item) => item.user === userState.user?._id
+  );
   let red =
-    props.post?.likes.includes(userState.user?._id) || isLike
+    result.length !== 0 || isLike
       ? { htmlColor: "red" }
       : { htmlColor: "grey" };
   let day = new Date(props.post.createdAt).getDate();
@@ -123,10 +158,19 @@ export default function Post(props) {
         <div className="postBottom">
           <div className="postBottomLeft">
             <Favorite {...red} className="likeIcon" onClick={handleLike} />
-            <span className="postLikeCounter">
+            <span
+              className="postLikeCounter"
+              onClick={() => {
+                setShowLikes(true);
+              }}
+            >
               {props.post.likes.length} Likes
             </span>
           </div>
+          {showLikes && (
+            <LikesCard allLikes={allLikes} setShowLikes={setShowLikes} />
+          )}
+
           <div className="postBottomRight">
             <Link to={`/post/${props.post._id}`}>
               <span className="postCommentText">

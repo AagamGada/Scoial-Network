@@ -6,7 +6,7 @@ module.exports = {
   async getAllPost(req, res) {
     try {
       const post = await Post.find({})
-        .populate("user", { name: 1 })
+        .populate("user", { name: 1 , image: 1})
         .sort({ createdAt: -1 });
       res.status(200).send(post);
     } catch (err) {
@@ -17,7 +17,7 @@ module.exports = {
     try {
       const post = await Post.find({ user: req.user._id })
         .populate("user", {
-          name: 1,
+          name: 1,  image: 1
         })
         .sort({ createdAt: -1 });
       res.status(200).send(post);
@@ -44,7 +44,7 @@ module.exports = {
   async getParticularPost(req, res) {
     try {
       const post = await Post.findById(req.params.postId).populate("user", {
-        name: 1,
+        name: 1, image: 1
       });
       res.status(200).send(post);
     } catch (err) {
@@ -54,7 +54,7 @@ module.exports = {
   async getUserPost(req, res) {
     try {
       const post = await Post.find({ user: req.params.userId })
-        .populate("user", { name: 1 })
+        .populate("user", { name: 1, image: 1 })
         .sort({ createdAt: -1 });
       res.status(200).send(post);
     } catch (err) {
