@@ -17,12 +17,11 @@ const Login = () => {
         ev.preventDefault();
         try{
             const {data}=await axios.post("/api/user/login",loginValue);
-            console.log(data);
             userDispatch({type:"LOGIN_USER",payload:data.payload});
             let accessToken=data.accessToken;
             localStorage.setItem("auth-token",accessToken);
             enqueueSnackbar("Logged in Successfully",{variant:"success"})
-            history.push("/home")
+            history.push("/")
         }catch(err){
             console.log(err);
             enqueueSnackbar("Invalid login credentials",{variant:"error"})
@@ -35,14 +34,14 @@ const Login = () => {
     }
      useEffect(() => {
         if (userState.authenticated) {
-            history.push("/home");
+            history.push("/");
         }
     }, [])
 
     return (
         <div className="auth_page">
             <form onSubmit={handleSubmit}>
-                <h3 className="text-uppercase text-center mb-4">Social Network</h3>
+                <h3 className="text-uppercase text-center mb-4">Social-Hunt</h3>
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
                     <input type="email" className="form-control" id="exampleInputEmail1" name="email"

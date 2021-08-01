@@ -14,7 +14,6 @@ import { Container } from "@material-ui/core";
 import { useHistory, Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import axios from "../utils/axios";
-import PersonImg from "../images/person1.jpg";
 import "../style/AppBar.css";
 import HomeIcon from "@material-ui/icons/Home";
 import Icon from "../images/icon.png"
@@ -22,7 +21,7 @@ import Icon from "../images/icon.png"
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 0,
-    borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
+    // borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -85,10 +84,10 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     display: "flex",
-    backgroundColor: "#fff",
-    color: "black",
+    backgroundColor: "#4d7292",
+    color: "#fff",
     boxShadow: "none",
-    borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
+    // borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
   },
 }));
 
@@ -123,7 +122,7 @@ export default function PrimarySearchAppBar() {
   const Logout = () => {
     localStorage.removeItem("auth-token");
     userDispatch({type:"LOGOUT_USER"});
-    history.push("/")
+    history.push("/login")
   };
 
   async function getAllUsers() {
@@ -138,7 +137,7 @@ export default function PrimarySearchAppBar() {
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [userState.user]);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -204,11 +203,12 @@ export default function PrimarySearchAppBar() {
 
             color="inherit"
             aria-label="open drawer"
+            onClick={() => {history.push("/");}}
           >
-            <img src={Icon}></img>
+            <img src={Icon} alt=""></img>
           </IconButton>
               <Typography className={classes.title} variant="h6" noWrap>
-                Social Network
+                Social-Hunt
               </Typography>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
@@ -231,7 +231,7 @@ export default function PrimarySearchAppBar() {
                 <IconButton aria-label="show 4 new mails" color="inherit">
                   <HomeIcon
                     onClick={() => {
-                      history.push("/home");
+                      history.push("/");
                     }}
                   />
                 </IconButton>
@@ -267,7 +267,7 @@ export default function PrimarySearchAppBar() {
         {searchTerm &&
           allUsers[0]?.user
             .filter((val) => {
-              if (searchTerm == "") {
+              if (searchTerm === "") {
                 return val;
               } else if (
                 val.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -285,7 +285,7 @@ export default function PrimarySearchAppBar() {
                       key={key}
                       style={{ color: "blue", display: "flex" }}
                     >
-                      <img className="postTopImg" src={PersonImg} alt="" />
+                      <img className="postTopImg" src={val.image} alt="" />
                       <p className="diffUser">{val.name}</p>
                     </div>
                   </Link>

@@ -1,23 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import EditProfile from "./EditProfile";
 import { UserContext } from "../../context/UserContext";
 import "../../style/Profile.css";
-import profileImage from "../../images/profileImage.jpg";
 import Followers from "./Followers";
 import Following from "./Following";
+import axios from "../../utils/axios";
 const Info = () => {
   const { userState } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
+  const [user, setUser] = useState(null);
   const handleClickOpen = () => {
     setOpen(true);
   };
+  async function getParticularUser() {
+    try {
+      const { data } = await axios.get(`/api/user/particularUser/${userState.user._id}`);
+      setUser(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    getParticularUser();
+    return () => {
+      setUser(null);
+    };
+  }, [userState.user]);
   return (
     <div className="info">
-      {console.log(userState.user)}
       <div className="info_container">
-        <img src={userState.user?.image} className="supper-avatar" />
+        <img src={userState.user?.image} alt="" className="supper-avatar" />
         <div className="info_content">
           <div className="info_content_title">
             <h2>{userState.user?.name}</h2>
@@ -27,10 +41,10 @@ const Info = () => {
           </div>
           <div className="follow_btn">
             <span className="mr-4" onClick={() => setShowFollowers(true)}>
-              {userState?.user?.followers?.length} Followers
+              {user?.followers.length} Followers
             </span>
             <span className="ml-4" onClick={() => setShowFollowing(true)}>
-              {userState.user?.following?.length} Following
+              {user?.following.length} Following
             </span>
           </div>
           <h6>
@@ -38,7 +52,6 @@ const Info = () => {
             <span className="text-danger"></span>
           </h6>
           <p className="m-0">{userState.user?.bio}</p>
-          <h6 className="m-0"></h6>
           <a target="_blank" rel="noreferrer"></a>
         </div>
         {open && <EditProfile setOpen={setOpen} />}

@@ -6,7 +6,7 @@ module.exports = {
   async getAllPost(req, res) {
     try {
       const post = await Post.find({})
-        .populate("user", { name: 1 , image: 1})
+        .populate("user", { name: 1, image: 1 })
         .sort({ createdAt: -1 });
       res.status(200).send(post);
     } catch (err) {
@@ -17,7 +17,8 @@ module.exports = {
     try {
       const post = await Post.find({ user: req.user._id })
         .populate("user", {
-          name: 1,  image: 1
+          name: 1,
+          image: 1,
         })
         .sort({ createdAt: -1 });
       res.status(200).send(post);
@@ -29,14 +30,18 @@ module.exports = {
     try {
       const userId = req.user._id;
       const user = await User.findById(userId);
-      const following = user.following;
-      const allpost = [];
-      following.forEach((element) => {
-        const post = Post.find({ user: element.user });
-        allpost.push(post);
-      });
-      const result = await Promise.all(allpost);
-      res.status(200).send(result);
+
+      const following = user.following.map((user) => user.user);
+      const post = await Post.find({
+        user: { $in: [...following, userId] },
+      })
+        .populate("user", {
+          name: 1,
+          image: 1,
+        })
+        .sort({ createdAt: -1 });
+
+      res.status(200).send(post);
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +49,8 @@ module.exports = {
   async getParticularPost(req, res) {
     try {
       const post = await Post.findById(req.params.postId).populate("user", {
-        name: 1, image: 1
+        name: 1,
+        image: 1,
       });
       res.status(200).send(post);
     } catch (err) {
@@ -99,11 +105,11 @@ module.exports = {
     try {
       const post = await Post.findById(req.params.id);
       const userId = req.user._id;
-      let result = post.likes.filter(item => item.user == userId);
+      let result = post.likes.filter((item) => item.user == userId);
       if (result.length !== 0) {
         await post.updateOne({ $pull: { likes: { user: userId } } });
         res.status(200).send(post);
-      }else{
+      } else {
         await post.updateOne({ $push: { likes: { user: userId } } });
         res.status(200).send(post);
       }

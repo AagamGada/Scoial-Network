@@ -1,12 +1,10 @@
-import React, { useState, useEffect , useContext} from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { UserContext } from '../context/UserContext';
+import React, { useState } from 'react'
+import { Link, } from 'react-router-dom'
 import axios from '../utils/axios';
 import '../style/Register.css'
 
 const ForgotPassword = () => {
-    const {userState,userDispatch}=useContext(UserContext);
-    const history = useHistory();
+    
     const [loginValue,setloginValues]=useState({
         email:"",
     });

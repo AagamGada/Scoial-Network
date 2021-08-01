@@ -1,16 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../style/Post.css";
-import PersonImg from "../images/person1.jpg";
-import { MoreVert, Favorite, ThumbUpAlt } from "@material-ui/icons";
+import { Favorite } from "@material-ui/icons";
 import { PostContext } from "../context/PostContext";
 import { UserContext } from "../context/UserContext";
 import axios from "../utils/axios";
 import { Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import LikesCard from "./LikesCard"
+import LikesCard from "./LikesCard";
 export default function Post(props) {
-  const { postState, postDispatch } = useContext(PostContext);
-  const { userState, userDispatch } = useContext(UserContext);
+  const { postDispatch } = useContext(PostContext);
+  const { userState } = useContext(UserContext);
   const [allComments, setAllComments] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const [comment, setComment] = useState("");
@@ -28,9 +27,8 @@ export default function Post(props) {
   }
   async function getAllPost() {
     try {
-      const { data } = await axios.get("/api/post");
+      const { data } = await axios.get("/api/post/getUserPost");
       postDispatch({ type: "POSTS_LOADED", payload: data });
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -39,7 +37,6 @@ export default function Post(props) {
     try {
       const { data } = await axios.get(`/api/post/getlikes/${props.post._id}`);
       setAllLikes([data]);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -56,7 +53,7 @@ export default function Post(props) {
       postDispatch({ type: "POST_COMMENTS", payload: data });
       getAllComments();
       enqueueSnackbar("Posted Successfully", { variant: "success" });
-      setComment("")
+      setComment("");
     } catch (err) {
       console.log(err);
     }
@@ -68,8 +65,10 @@ export default function Post(props) {
       const { data } = await axios.put(`/api/post/likes/${props.post._id}`);
       postDispatch({ type: "POST_LOADED", payload: data });
       setIsLike(true);
-      let result = props.post?.likes.filter((item) => item.user === userState.user?._id);
-      if (result.length!==0) {
+      let result = props.post?.likes.filter(
+        (item) => item.user === userState.user?._id
+      );
+      if (result.length !== 0) {
         setIsLike(false);
       }
       getAllPost();
@@ -86,15 +85,17 @@ export default function Post(props) {
       postDispatch({ type: "POST_UNLOADED" });
     };
   }, []);
-  let month = new Date(props.post.createdAt).toLocaleString("default", {
+  let month = new Date(props?.post?.createdAt).toLocaleString("default", {
     month: "short",
   });
-  let result = props.post?.likes.filter((item) => item.user === userState.user?._id);
+  let result = props.post?.likes.filter(
+    (item) => item.user === userState.user?._id
+  );
   let red =
-    (result.length !== 0) || isLike
+    result?.length !== 0 || isLike
       ? { htmlColor: "red" }
       : { htmlColor: "grey" };
-  let day = new Date(props.post.createdAt).getDate();
+  let day = new Date(props?.post?.createdAt).getDate();
   return (
     <div className="post" style={{ background: "white" }}>
       <div className="postWrapper">
@@ -106,21 +107,29 @@ export default function Post(props) {
           </div>
         </div>
         <div className="postCenter">
-          <span className="text">{props.post.content}</span>
-          {props.post.image && (
-            <img src={props.post.image} alt="" className="postImg" />
+          <span className="text">{props.post?.content}</span>
+          {props.post?.image && (
+            <img src={props.post?.image} alt="" className="postImg" />
           )}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
             <Favorite {...red} className="likeIcon" onClick={handleLike} />
-            <span className="postLikeCounter" onClick={()=>{setShowLikes(true)}}>
-              {props.post.likes.length} Likes
+            <span
+              className="postLikeCounter"
+              onClick={() => {
+                setShowLikes(true);
+              }}
+              style={{ cursor: "pointer" }}
+            >
+              {props.post?.likes.length} Likes
             </span>
           </div>
-          {showLikes && <LikesCard allLikes={allLikes} setShowLikes={setShowLikes}/>}
+          {showLikes && (
+            <LikesCard allLikes={allLikes} setShowLikes={setShowLikes} />
+          )}
           <div className="postBottomRight">
-            <Link to={`/post/${props.post._id}`}>
+            <Link to={`/post/${props.post?._id}`}>
               <span className="postCommentText">
                 {allComments.length} comments
               </span>

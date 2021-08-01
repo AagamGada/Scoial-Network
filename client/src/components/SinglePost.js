@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import AppBar from "../components/AppBar";
 import "../style/SinglePost.css";
-import PersonImg from "../images/person1.jpg";
 import Comments from "..//components/Comments";
-import { MoreVert, Favorite, ThumbUpAlt } from "@material-ui/icons";
+import { Favorite } from "@material-ui/icons";
 import { PostContext } from "../context/PostContext";
 import { UserContext } from "../context/UserContext";
 import { useParams } from "react-router";
@@ -12,16 +11,16 @@ import { useSnackbar } from "notistack";
 import LikesCard from "./LikesCard";
 export default function SinglePost() {
   const params = useParams();
-  const { userState, userDispatch } = useContext(UserContext);
+  const { userState, } = useContext(UserContext);
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-  const [allComments, setAllComments] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
-  const { postState, postDispatch } = useContext(PostContext);
+  const { postDispatch } = useContext(PostContext);
   const [isLike, setIsLike] = useState(false);
   const [comment, setComment] = useState("");
   const [allLikes, setAllLikes] = useState([]);
   const [showLikes, setShowLikes] = useState(false);
+
     const getPost = async () => {
       try {
         const postId = params.postId;
@@ -44,7 +43,6 @@ export default function SinglePost() {
       try {
         const { data } = await axios.get(`/api/post/getlikes/${params.postId}`);
         setAllLikes([data]);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -122,10 +120,10 @@ export default function SinglePost() {
           <div className="postBottom">
             <div className="postBottomLeft">
             <Favorite {...red} className="likeIcon" onClick={handleLike} />
-            {showLikes && <LikesCard allLikes={allLikes} setShowLikes={setShowLikes}/>}
-              <span className="postLikeCounter">
+              <span className="postLikeCounter" onClick={()=>{setShowLikes(true)}} style={{cursor:"pointer"}}>
                 {post?.likes.length} Likes
               </span>
+              {showLikes && <LikesCard allLikes={allLikes} setShowLikes={setShowLikes}/>}
             </div>
             <div className="postBottomRight">
               <span className="postCommentText">

@@ -17,7 +17,7 @@ const LikesCard = ({ setShowLikes, allLikes }) => {
                   // return <UserPosts post={post} key={post._id} />;
                   return (
                     <div className="d-flex align-items-center mt-3 ">
-                      <img src={likes.user.image} className="big-avatar" />
+                      <img src={likes.user.image} alt="" className="big-avatar" />
                       <div
                         className="ml-1"
                         style={{ transform: "translateY(-2px)" }}
@@ -28,7 +28,6 @@ const LikesCard = ({ setShowLikes, allLikes }) => {
                     </div>
                   );
                 })}
-                {console.log(allLikes)}
               </div>
             </div>
           </div>

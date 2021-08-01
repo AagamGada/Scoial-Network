@@ -16,11 +16,10 @@ const UserCard = ({
       <div>
         <div onClick={handleCloseAll}>
           {allFollowers?.slice(0).map((followers) => {
-            // return <UserPosts post={post} key={post._id} />;
             return (
               <Link to={`/userProfile/${followers.user._id}`}>
               <div className="d-flex align-items-center mt-3 ">
-                <img src={followers.user.image} className="big-avatar" />
+                <img src={followers.user.image} alt="" className="big-avatar" />
                 <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
                   <span className="d-block">{followers.user.name}</span>
                   <small style={{ opacity: 0.7 }}></small>
@@ -30,11 +29,10 @@ const UserCard = ({
             );
           })}
           {allFollowing?.slice(0).map((following) => {
-            // return <UserPosts post={post} key={post._id} />;
             return (
               <Link to={`/userProfile/${following.user._id}`}>
               <div className="d-flex align-items-center mt-3 ">
-                <img src={following.user.image} className="big-avatar" />
+                <img src={following.user.image} alt="" className="big-avatar" />
                 <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
                   <span className="d-block">{following.user.name}</span>
                   <small style={{ opacity: 0.7 }}></small>
@@ -43,12 +41,6 @@ const UserCard = ({
               </Link>
             );
           })}
-          {/* <img src={Person} className="big-avatar" />
-                    <div className="ml-1" style={{transform: 'translateY(-2px)'}}>
-                        <span className="d-block">Misthi</span>
-                        <small style={{opacity: 0.7}}>
-                        </small>
-                    </div> */}
         </div>
       </div>
     </div>

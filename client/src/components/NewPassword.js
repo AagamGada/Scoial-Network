@@ -9,8 +9,7 @@ export default function NewPassword() {
     const handleSubmit=async(ev)=>{
         ev.preventDefault();
         try{
-            const {data}=await axios.post(`/api/user/newPassword/${params.email}`,passValue);
-
+            await axios.post(`/api/user/newPassword/${params.email}`,passValue);
         }catch(err){
             console.log(err);
         }

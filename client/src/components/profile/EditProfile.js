@@ -1,12 +1,10 @@
 import React, { useState, useContext } from "react";
 import axios from "../../utils/axios";
-import { useHistory } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { useSnackbar } from "notistack";
 
 const EditProfile = ({ setOpen }) => {
   const { userState, userDispatch } = useContext(UserContext);
-  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
   const [updatedValues, setUpdatedValues] = useState({
@@ -19,9 +17,7 @@ const EditProfile = ({ setOpen }) => {
     ev.preventDefault();
     if (file) {
       const fileData = new FormData();
-      console.log(file)
       var fileName = file.name;
-      console.log(fileName);
       fileData.append("profile", file);
       fileData.append("name", fileName);
       try {
@@ -38,7 +34,6 @@ const EditProfile = ({ setOpen }) => {
     }
     try {
       const { data } = await axios.put("/api/user/update", {...updatedValues, image: profileImage})
-      console.log(data)
       localStorage.removeItem("auth-token");
       let accessToken=data.accessToken;
       localStorage.setItem("auth-token",accessToken);
@@ -52,7 +47,6 @@ const EditProfile = ({ setOpen }) => {
       enqueueSnackbar("Invalid credentials", { variant: "error" });
     }
   };
-  console.log(userState.user)
   const handleChangeInput = (ev) => {
     setUpdatedValues((prev) => ({
       ...prev,
@@ -72,7 +66,7 @@ const EditProfile = ({ setOpen }) => {
 
         <form onSubmit={handleSubmit} style={{marginTop: "5%"}}>
           <div className="info_avatar">
-            <img src={userState.user?.image} />
+            <img src={userState.user?.image} alt=""/>
             <span>
               <i className="fas fa-camera" />
               <p>Change</p>

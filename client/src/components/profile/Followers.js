@@ -8,12 +8,10 @@ const Followers = ({ setShowFollowers }) => {
   const { userState } = useContext(UserContext);
 //   const params = useParams();
   async function getFollowers() {
-    console.log("hi");
     try {
     //   const userId = params.userId;
       const { data } = await axios.get(`/api/user/followers/${userState.user._id}`);
       setAllFollowers(data);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }

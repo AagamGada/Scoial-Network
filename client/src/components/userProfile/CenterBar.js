@@ -1,10 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../style/CenterBar.css";
 import UserPosts from "./Post";
-import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
 import { PostContext } from "../../context/PostContext";
 import axios from "../../utils/axios";
-import { useSnackbar } from "notistack";
 import { useParams } from "react-router";
 export default function CenterBar() {
   const params = useParams();
@@ -14,8 +12,6 @@ export default function CenterBar() {
       const userId = params.userId;
       const { data } = await axios.get(`/api/post/user/${userId}`);
       postDispatch({ type: "POSTS_LOADED", payload: data });
-      console.log(data);
-      console.log(postState.posts);
     } catch (err) {
       console.log(err);
     }
@@ -28,10 +24,10 @@ export default function CenterBar() {
   }, [params.userId]);
   return (
     <div className="CenterBar">
-      {postState.posts.length>0 ? (
+      {postState.posts?.length>0 ? (
         <div className="centerWrapper">
-          {postState.posts.slice(0).map((post) => {
-            return <UserPosts post={post} key={post._id} />;
+          {postState.posts?.slice(0).map((post) => {
+            return <UserPosts post={post} key={post?._id} />;
           })}
         </div>
       ) : (
@@ -39,7 +35,6 @@ export default function CenterBar() {
            No Post Uploaded
         </div>
       )}
-      {console.log(postState.posts)}
     </div>
   );
 }

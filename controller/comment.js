@@ -11,7 +11,6 @@ module.exports = {
     },
     async addComment(req, res) {
         try {
-            console.log(req.body)
             const comment = new Comment({ ...req.body, user: req.user._id, post: req.params.postId });
             newComment = await comment.save();
             res.status(201).send(newComment)

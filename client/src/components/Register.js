@@ -5,11 +5,6 @@ import { UserContext } from "../context/UserContext";
 import { useSnackbar } from "notistack";
 import '../style/Register.css'
 const Register = () => {
-    useEffect(() => {
-        if (userState.authenticated) {
-            history.push("/home");
-        }
-    }, [])
     const { enqueueSnackbar } = useSnackbar();
     const { userState, userDispatch } = useContext(UserContext);
     const history = useHistory();
@@ -19,6 +14,11 @@ const Register = () => {
         password: "",
         repeatPassword: "",
     });
+    useEffect(() => {
+        if (userState.authenticated) {
+            history.push("/");
+        }
+    }, [])
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         try {
@@ -31,7 +31,7 @@ const Register = () => {
             userDispatch({ type: "REGISTER_USER", payload: data.payload });
 
             enqueueSnackbar("Registered Successfully", { variant: "success" });
-            history.push("/home")
+            history.push("/")
         } catch (err) {
             console.log(err);
         }
@@ -46,7 +46,7 @@ const Register = () => {
         <div className="auth_page">
             <form onSubmit={handleSubmit}>
                 <h3 className="text-uppercase text-center mb-4">Welcome to</h3>
-                <h4 className="text-uppercase text-center mb-4">Socail-Network</h4>
+                <h4 className="text-uppercase text-center mb-4">Social-Hunt</h4>
 
                 <div className="form-group">
                     <label htmlFor="fullname">Full Name</label>

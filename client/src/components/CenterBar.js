@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../style/CenterBar.css";
 import Post from "./Post";
-import PersonImg from "../images/person1.jpg";
-import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
+import { PermMedia , EmojiEmotions } from "@material-ui/icons";
 import { PostContext } from "../context/PostContext";
 import axios from "../utils/axios";
 import { useSnackbar } from "notistack";
@@ -11,21 +10,18 @@ import Emoji from "./Emoji";
 export default function CenterBar() {
   const { postState, postDispatch } = useContext(PostContext);
   const { userState } = useContext(UserContext);
-  const [allPost, setAllPost] = useState(0);
   const [emoji, setEmoji] = useState(false);
   const [post, setPost] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
-  const [showImage, setShowImage] = useState(false);
   const handleEmoji = (emoji) => {
     setPost((prev) => prev + emoji);
   };
-  console.log(post);
   async function getAllPost() {
     try {
-      const { data } = await axios.get("/api/post");
+      const { data } = await axios.get("/api/post/getUserPost");
+
       postDispatch({ type: "POSTS_LOADED", payload: data });
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -35,7 +31,6 @@ export default function CenterBar() {
     if (file) {
       const fileData = new FormData();
       var fileName = file.name;
-      console.log(fileName);
       fileData.append("profile", file);
       fileData.append("name", fileName);
       try {
@@ -48,31 +43,31 @@ export default function CenterBar() {
       if (post === "") {
         return enqueueSnackbar("Empty Post", { variant: "error" });
       }
-      console.log(fileName);
-      const { data } = await axios.post(`/api/post`, {
+      await axios.post(`/api/post`, {
         content: post,
         image: `http://localhost:5000/images/${fileName}`,
       });
-      postDispatch({ type: "ADD_POST", payload: data });
+      // postDispatch({ type: "ADD_POST", payload: data });
       enqueueSnackbar("Posted Successfully", { variant: "success" });
       setPost("");
+      setFile(null);
       getAllPost();
     } catch (err) {
       console.log(err);
     }
   };
   const openClose = () => {
-    if(!emoji){
+    if (!emoji) {
       setEmoji(true);
-    }else{
+    } else {
       setEmoji(false);
     }
-  }
+  };
 
-  const handleChangeInput=(ev)=>{
+  const handleChangeInput = (ev) => {
     setFile(ev.target.files[0]);
-    setShowImage(true);
-}
+    // setShowImage(true);
+  };
 
   useEffect(() => {
     getAllPost();
@@ -88,7 +83,11 @@ export default function CenterBar() {
         <div className="share" style={{ background: "white" }}>
           <div className="shareWrapper">
             <div className="shareTop">
-              <img className="shareProfileImg" src={userState.user?.image} alt="" />
+              <img
+                className="shareProfileImg"
+                src={userState.user?.image}
+                alt=""
+              />
               <input
                 type="text"
                 className="shareInput"
@@ -97,6 +96,8 @@ export default function CenterBar() {
                 value={post}
               ></input>
             </div>
+            <span className="badge badge-pill badge-secondary">{file?.name}</span>
+
             <hr className="hr" />
             <div className="shareBottom">
               <div className="option">
@@ -111,9 +112,7 @@ export default function CenterBar() {
                       style={{ display: "none" }}
                     />
                   </label>
-                  {/* {showImage && <img className="photoContainer" src={`http://localhost:5000/images/${file.name}`}></img>} */}
                 </div>
-                {/* {showImage && <div className="photoContainer">{file?.name}</div>} */}
                 <div className="options">
                   <EmojiEmotions
                     htmlColor="goldenrod"
@@ -133,10 +132,9 @@ export default function CenterBar() {
           </div>
         </div>
         {emoji && <Emoji handleEmoji={handleEmoji} />}
-        {postState.posts.slice(0).map((post) => {
-          return <Post post={post} key={post._id} />;
+        {postState?.posts?.slice(0).map((post) => {
+          return <Post post={post} key={post?._id} />;
         })}
-        {console.log(postState)}
       </div>
     </div>
   );

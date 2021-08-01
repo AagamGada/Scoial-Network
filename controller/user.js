@@ -67,7 +67,6 @@ module.exports = {
     try {
       const user = await User.findById(req.params.userId, { password: 0 });
       res.status(200).send(user);
-      console.log(user);
     } catch (err) {
       res.status(500).send("Internal Server Error");
       console.log(err);
@@ -169,12 +168,9 @@ module.exports = {
   async followUser(req, res) {
     try {
       const userId = req.user._id;
-      console.log(userId);
       const user = await User.findById(userId);
       const newUser = await User.findById(req.body._id);
-      console.log(newUser.followers);
       let result = newUser.followers.filter((item) => item.user === userId);
-      console.log(result);
       if (result.length !== 0) {
         throw new Error("You Already followed");
       } else {
@@ -192,7 +188,6 @@ module.exports = {
       const user = await User.findById(userId);
       const newUser = await User.findById(req.body._id);
       let result = newUser.followers.filter((item) => item.user !== userId);
-      console.log(result);
       if (result.length !== 0) {
         await user.updateOne({ $pull: { following: { user: req.body._id } } });
         await newUser.updateOne({ $pull: { followers: { user: userId } } });
@@ -224,7 +219,6 @@ module.exports = {
         name: 1,
         image: 1,
       });
-      // console.log(user);
       res.status(200).send(user.following);
     } catch (err) {
       console.log(err);
@@ -233,7 +227,6 @@ module.exports = {
 
   async forgotPassword(req, res) {
     try {
-      console.log(req.body.email);
       let transporter = nodemailer.createTransport({
         host: "iaagam.com",
         port: 465,
@@ -272,7 +265,6 @@ module.exports = {
   },
   async upload(req, res) {
     try {
-      console.log(req.file);
       res.status(200).send("Successfully uplaoded");
     } catch (err) {
       res.status(500).send("internal server error");

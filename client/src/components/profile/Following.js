@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useContext} from "react";
 import UserCard from "./UserCard";
 import axios from "../../utils/axios"
-import { useParams } from "react-router";
 import { UserContext } from "../../context/UserContext"
 const Following = ({ setShowFollowing }) => {
   const [allFollowing, setAllFollowing] = useState(null);
@@ -10,7 +9,6 @@ const Following = ({ setShowFollowing }) => {
     try {
       const { data } = await axios.get(`/api/user/following/${userState.user._id}`);
       setAllFollowing(data);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }

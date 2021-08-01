@@ -6,13 +6,10 @@ const Following = ({ setShowFollowing }) => {
   const [allFollowing, setAllFollowing] = useState(null);
   const params = useParams();
   async function getFollowing() {
-    console.log("hi");
     try {
       const userId = params.userId;
-      console.log(userId);
       const { data } = await axios.get(`/api/user/following/${userId}`);
       setAllFollowing(data);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }

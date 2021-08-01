@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../../style/CenterBar.css";
 import Post from "./Post";
-import { PermMedia, Label, Room, EmojiEmotions } from "@material-ui/icons";
+import { PermMedia, EmojiEmotions } from "@material-ui/icons";
 import { PostContext } from "../../context/PostContext";
 import axios from "../../utils/axios";
 import { UserContext } from "../../context/UserContext";
@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import Emoji from "../Emoji";
 export default function CenterBar() {
   const { postState, postDispatch } = useContext(PostContext);
-  const { userState, userDispatch } = useContext(UserContext);
+  const { userState } = useContext(UserContext);
   const [emoji, setEmoji] = useState(false);
   const [post, setPost] = useState("");
   const { enqueueSnackbar } = useSnackbar();
@@ -22,7 +22,6 @@ export default function CenterBar() {
     try {
       const { data } = await axios.get("/api/post/personalPost");
       postDispatch({ type: "POSTS_LOADED", payload: data });
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -122,8 +121,8 @@ export default function CenterBar() {
           </div>
         </div>
         {emoji && <Emoji handleEmoji={handleEmoji} />}
-        {postState.posts.slice(0).map((post) => {
-          return <Post post={post} key={post._id} />;
+        {postState?.posts?.slice(0).map((post) => {
+          return <Post post={post} key={post?._id} />;
         })}
       </div>
     </div>

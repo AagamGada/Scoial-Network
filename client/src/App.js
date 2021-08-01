@@ -17,14 +17,14 @@ export default function App() {
       <UserProvider>
         <PostProvider>
           <Switch>
-            <Route exact path="/" component={Login}></Route>
+            <Route exact path="/login" component={Login}></Route>
             <Route exact path="/register" component={Register}></Route>
             <Route exact path="/forgotPassword" component={ForgotPassword}></Route>
             <Route exact path="/newPassword/:email" component={NewPassword}></Route>
             <Route exact path="/profile" component={Profile}></Route>
             <Route exact path="/post/:postId" component={SinglePost}></Route>
             <Route exact path="/userProfile/:userId" component={UserProfile}></Route>
-            <Route exact path="/home" component={Home}></Route>
+            <Route exact path="/" component={Home}></Route>
           </Switch>  
         </PostProvider>
       </UserProvider>

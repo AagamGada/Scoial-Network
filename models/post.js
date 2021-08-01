@@ -21,10 +21,6 @@ const postSchema = new Schema(
               },
             },
           ],
-        // comments: {
-        //     type: Array,
-        //     default: [],
-        // }
     },
     {timestamps: true},
 )

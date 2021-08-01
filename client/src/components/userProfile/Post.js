@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../../style/Post.css";
-import {  Favorite } from "@material-ui/icons";
+import { Favorite } from "@material-ui/icons";
 import { PostContext } from "../../context/PostContext";
 import { UserContext } from "../../context/UserContext";
 import axios from "../../utils/axios";
@@ -10,7 +10,7 @@ import { useParams } from "react-router";
 import LikesCard from "../LikesCard";
 export default function Post(props) {
   const { postState, postDispatch } = useContext(PostContext);
-  const { userState, userDispatch } = useContext(UserContext);
+  const { userState } = useContext(UserContext);
   const [allComments, setAllComments] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const [comment, setComment] = useState("");
@@ -23,8 +23,6 @@ export default function Post(props) {
       const userId = params.userId;
       const { data } = await axios.get(`/api/post/user/${userId}`);
       postDispatch({ type: "POSTS_LOADED", payload: data });
-      console.log(data);
-      console.log(postState.posts);
     } catch (err) {
       console.log(err);
     }
@@ -43,7 +41,6 @@ export default function Post(props) {
     try {
       const { data } = await axios.get(`/api/post/getlikes/${props.post._id}`);
       setAllLikes([data]);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -90,31 +87,31 @@ export default function Post(props) {
       postDispatch({ type: "COMMENTS_UNLOADED" });
     };
   }, []);
-  let month = new Date(props.post.createdAt).toLocaleString("default", {
+  let month = new Date(props.post?.createdAt).toLocaleString("default", {
     month: "short",
   });
-  let result = props.post?.likes.filter(
+  let result = props?.post?.likes.filter(
     (item) => item.user === userState.user?._id
   );
   let red =
-    result.length !== 0 || isLike
+    result?.length !== 0 || isLike
       ? { htmlColor: "red" }
       : { htmlColor: "grey" };
-  let day = new Date(props.post.createdAt).getDate();
+  let day = new Date(props.post?.createdAt).getDate();
   return (
     <div className="post" style={{ background: "white" }}>
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img className="postTopImg" src={props.post.user?.image} alt="" />
-            <span className="postUser">{props.post.user?.name}</span>
+            <img className="postTopImg" src={props.post?.user?.image} alt="" />
+            <span className="postUser">{props.post?.user?.name}</span>
             <span className="postDate">{`${month} ${day}`}</span>
           </div>
         </div>
         <div className="postCenter">
-          <span className="text">{props.post.content}</span>
-          {props.post.image && (
-            <img src={props.post.image} alt="" className="postImg" />
+          <span className="text">{props?.post?.content}</span>
+          {props?.post?.image && (
+            <img src={props?.post?.image} alt="" className="postImg" />
           )}
         </div>
         <div className="postBottom">
@@ -125,6 +122,7 @@ export default function Post(props) {
               onClick={() => {
                 setShowLikes(true);
               }}
+              style={{ cursor: "pointer" }}
             >
               {props.post.likes.length} Likes
             </span>
