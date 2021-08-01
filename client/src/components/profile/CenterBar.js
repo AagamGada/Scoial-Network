@@ -92,6 +92,7 @@ export default function CenterBar() {
                 value={post}
               ></input>
             </div>
+            <span className="badge badge-pill badge-secondary">{file?.name}</span>
             <hr className="hr" />
             <div className="shareBottom">
               <div className="option">

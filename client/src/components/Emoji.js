@@ -8,7 +8,7 @@ export default function Emoji(props) {
     };
 
     return (
-        <div style={{position: 'absolute'}}>
+        <div style={{position: 'absolute', zIndex: '1'}}>
             <Picker onEmojiClick={onEmojiClick} />
         </div>
     );

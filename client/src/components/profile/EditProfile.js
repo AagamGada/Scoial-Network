@@ -79,6 +79,7 @@ const EditProfile = ({ setOpen }) => {
               />
             </span>
           </div>
+          <span className="badge badge-pill badge-secondary">{file?.name}</span>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <div className="position-relative">
