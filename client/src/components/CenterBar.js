@@ -39,13 +39,19 @@ export default function CenterBar() {
         console.log(err);
       }
     }
+    var profileImage;
+    if(fileName === undefined){
+      profileImage = "";
+    }else{
+      profileImage = `http://localhost:5000/images/${fileName}`;
+    }
     try {
       if ((post === "") && (fileName === undefined )) {
         return enqueueSnackbar("Empty Post", { variant: "error" });
       }
       await axios.post(`/api/post`, {
         content: post,
-        image: `http://localhost:5000/images/${fileName}`,
+        image: profileImage,
       });
       // postDispatch({ type: "ADD_POST", payload: data });
       enqueueSnackbar("Posted Successfully", { variant: "success" });
