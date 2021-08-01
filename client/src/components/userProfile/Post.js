@@ -9,7 +9,7 @@ import { useSnackbar } from "notistack";
 import { useParams } from "react-router";
 import LikesCard from "../LikesCard";
 export default function Post(props) {
-  const { postState, postDispatch } = useContext(PostContext);
+  const { postDispatch } = useContext(PostContext);
   const { userState } = useContext(UserContext);
   const [allComments, setAllComments] = useState(0);
   const { enqueueSnackbar } = useSnackbar();

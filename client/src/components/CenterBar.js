@@ -40,7 +40,7 @@ export default function CenterBar() {
       }
     }
     try {
-      if (post === "") {
+      if ((post === "") && (fileName === undefined )) {
         return enqueueSnackbar("Empty Post", { variant: "error" });
       }
       await axios.post(`/api/post`, {

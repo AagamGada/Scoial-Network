@@ -124,6 +124,9 @@ export default function PrimarySearchAppBar() {
     userDispatch({type:"LOGOUT_USER"});
     history.push("/login")
   };
+  const LoginBtn = () => {
+    history.push("/login")
+  };
 
   async function getAllUsers() {
     try {
@@ -134,9 +137,10 @@ export default function PrimarySearchAppBar() {
       console.log(err);
     }
   }
-
   useEffect(() => {
     getAllUsers();
+
+    // eslint-disable-line react-hooks/exhaustive-deps
   }, [userState.user]);
 
   const menuId = "primary-search-account-menu";
@@ -228,12 +232,11 @@ export default function PrimarySearchAppBar() {
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                  <HomeIcon
-                    onClick={() => {
-                      history.push("/");
-                    }}
-                  />
+                <IconButton aria-label="show 4 new mails" color="inherit"
+                 onClick={() => {
+                  history.push("/");
+                }}>
+                  <HomeIcon/>
                 </IconButton>
                 <IconButton
                   edge="end"
@@ -257,6 +260,8 @@ export default function PrimarySearchAppBar() {
                   <MoreIcon />
                 </IconButton>
               </div>
+              {!userState.authenticated && <button className="btn btn-primary loginButton" type="submit" onClick={LoginBtn}>Login</button>}
+              
             </Toolbar>
           </Container>
         </AppBar>
