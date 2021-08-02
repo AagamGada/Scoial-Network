@@ -63,8 +63,4 @@ router.put("/follow", authMiddleware, UserController.followUser);
 
 router.put("/unfollow", authMiddleware, UserController.unFollowUser);
 
-router.post("/email", UserController.forgotPassword);
-
-router.post("/newPassword/:email", UserController.newPassword);
-
 module.exports = router;

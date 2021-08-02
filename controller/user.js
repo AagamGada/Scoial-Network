@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 require("dotenv").config();
-const nodemailer = require("nodemailer");
 
 const createAccessToken = (payload, expiresIn = "365d") => {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
@@ -222,45 +221,6 @@ module.exports = {
       res.status(200).send(user.following);
     } catch (err) {
       console.log(err);
-    }
-  },
-
-  async forgotPassword(req, res) {
-    try {
-      let transporter = nodemailer.createTransport({
-        host: "iaagam.com",
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-          user: "neworigin@iaagam.com", // generated ethereal user
-          pass: "4WO#Atz7Yem,", // generated ethereal password
-        },
-      });
-      let info = await transporter.sendMail({
-        from: '"AagamSolutions 👻" <neworigin@iaagam.com>', // sender address
-        to: req.body.email, // list of receivers
-        subject: "Email Verification", // Subject line
-        text: "Hello world?", // plain text body
-        html: `<p>Thank you for signing up. Please click this <a href=http://localhost:3000/newPassword/${req.body.email}>link</a> to verify your email</p>`,
-      });
-      res.status(201).send("Email sent");
-    } catch (err) {
-      console.log(err);
-      res.status(500).send("Internal Server Error");
-    }
-  },
-  async newPassword(req, res) {
-    try {
-      let saltRounds = await bcrypt.genSalt(10);
-      let hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-      const newPassword = await User.updateOne(
-        { email: req.params.email },
-        { $set: { password: hashedPassword } }
-      );
-      res.send("Password Changed");
-    } catch (err) {
-      console.log(err);
-      res.send("invalid Email");
     }
   },
   async upload(req, res) {

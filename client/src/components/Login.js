@@ -55,16 +55,7 @@ const Login = () => {
                         <input 
                         className="form-control" id="exampleInputPassword1" type="password"
                         onChange={handleChangeInput}  name="password" value={loginValue.password}/>
-
-                        {/* <small >
-                        <input type="checkbox" onclick={myFunction}>Show Password</input>
-                        </small> */}
                     </div>
-                    <Link to="/forgotPassword">
-                    <small id="emailHelp" className="form-text text-muted">
-                        Forgot Your Password?
-                    </small>
-                    </Link>
                    
                 </div>
                 
