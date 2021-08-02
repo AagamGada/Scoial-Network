@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../../style/Post.css";
-import {Favorite} from "@material-ui/icons";
+import { Favorite } from "@material-ui/icons";
 import { PostContext } from "../../context/PostContext";
 import { UserContext } from "../../context/UserContext";
 import axios from "../../utils/axios";
@@ -100,6 +100,7 @@ export default function Post(props) {
     return () => {
       postDispatch({ type: "COMMENTS_UNLOADED" });
     };
+    // eslint-disable-next-line
   }, []);
   let month = new Date(props.post?.createdAt).toLocaleString("default", {
     month: "short",
@@ -122,7 +123,11 @@ export default function Post(props) {
             <span className="postDate">{`${month} ${day}`}</span>
           </div>
           <div className="postTopRight">
-            <i class="fas fa-ellipsis-v" onClick={openDropDown} style={{cursor: "pointer"}}>
+            <i
+              className="fas fa-ellipsis-v"
+              onClick={openDropDown}
+              style={{ cursor: "pointer" }}
+            >
               {dropDown && (
                 <div className="dropDown">
                   <ul>
@@ -147,7 +152,7 @@ export default function Post(props) {
               onClick={() => {
                 setShowLikes(true);
               }}
-              style={{cursor:"pointer"}}
+              style={{ cursor: "pointer" }}
             >
               {props.post?.likes.length} Likes
             </span>

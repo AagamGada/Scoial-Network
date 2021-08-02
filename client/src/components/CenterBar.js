@@ -53,7 +53,6 @@ export default function CenterBar() {
         content: post,
         image: profileImage,
       });
-      // postDispatch({ type: "ADD_POST", payload: data });
       enqueueSnackbar("Posted Successfully", { variant: "success" });
       setPost("");
       setFile(null);
@@ -81,6 +80,7 @@ export default function CenterBar() {
       postDispatch({ type: "POST_UNLOADED" });
       postDispatch({ type: "POSTS_UNLOADED" });
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

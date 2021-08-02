@@ -16,7 +16,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "../utils/axios";
 import "../style/AppBar.css";
 import HomeIcon from "@material-ui/icons/Home";
-import Icon from "../images/icon.png"
+import Icon from "../images/icon.png";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -121,13 +121,10 @@ export default function PrimarySearchAppBar() {
 
   const Logout = () => {
     localStorage.removeItem("auth-token");
-    userDispatch({type:"LOGOUT_USER"});
-    history.push("/login")
+    userDispatch({ type: "LOGOUT_USER" });
+    history.push("/login");
   };
-  const LoginBtn = () => {
-    history.push("/login")
-  };
-
+  
   async function getAllUsers() {
     try {
       const { data } = await axios.get("/api/user");
@@ -140,8 +137,8 @@ export default function PrimarySearchAppBar() {
   useEffect(() => {
     getAllUsers();
 
-    // eslint-disable-line react-hooks/exhaustive-deps
-  }, [userState.user]);
+    // eslint-disable-next-line
+  }, []);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -176,9 +173,13 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => {history.push("/");}}>
+      <MenuItem
+        onClick={() => {
+          history.push("/");
+        }}
+      >
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <HomeIcon/>
+          <HomeIcon />
         </IconButton>
         <p>Home</p>
       </MenuItem>
@@ -202,15 +203,16 @@ export default function PrimarySearchAppBar() {
         <AppBar position="fixed" className={classes.topBar}>
           <Container maxWidth="md">
             <Toolbar>
-            <IconButton
-            edge="start"
-
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => {history.push("/");}}
-          >
-            <img src={Icon} alt=""></img>
-          </IconButton>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={() => {
+                  history.push("/");
+                }}
+              >
+                <img src={Icon} alt=""></img>
+              </IconButton>
               <Typography className={classes.title} variant="h6" noWrap>
                 Social-Hunt
               </Typography>
@@ -232,11 +234,14 @@ export default function PrimarySearchAppBar() {
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton aria-label="show 4 new mails" color="inherit"
-                 onClick={() => {
-                  history.push("/");
-                }}>
-                  <HomeIcon/>
+                <IconButton
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={() => {
+                    history.push("/");
+                  }}
+                >
+                  <HomeIcon />
                 </IconButton>
                 <IconButton
                   edge="end"
@@ -260,8 +265,6 @@ export default function PrimarySearchAppBar() {
                   <MoreIcon />
                 </IconButton>
               </div>
-              {!userState.authenticated && <button className="btn btn-primary loginButton" type="submit" onClick={LoginBtn}>Login</button>}
-              
             </Toolbar>
           </Container>
         </AppBar>
@@ -279,15 +282,15 @@ export default function PrimarySearchAppBar() {
               ) {
                 return val;
               }
+              return val;
             })
             .filter((val) => val._id !== userState.user._id)
             .map((val, key) => {
               return (
-                <>
+                <div key={key}>
                   <Link to={`/userProfile/${val._id}`}>
                     <div
                       className="searchUser"
-                      key={key}
                       style={{ color: "blue", display: "flex" }}
                     >
                       <img className="postTopImg" src={val.image} alt="" />
@@ -295,7 +298,7 @@ export default function PrimarySearchAppBar() {
                     </div>
                   </Link>
                   <hr className="userLine" />
-                </>
+                </div>
               );
             })}
       </div>

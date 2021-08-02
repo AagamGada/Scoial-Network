@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useHistory, Link } from 'react-router-dom';
 import axios from '../utils/axios';
 import { UserContext } from "../context/UserContext";
@@ -6,7 +6,7 @@ import { useSnackbar } from "notistack";
 import '../style/Register.css'
 const Register = () => {
     const { enqueueSnackbar } = useSnackbar();
-    const { userState, userDispatch } = useContext(UserContext);
+    const { userDispatch } = useContext(UserContext);
     const history = useHistory();
     const [registerValues, setRegisterValues] = useState({
         email: "",
@@ -14,11 +14,6 @@ const Register = () => {
         password: "",
         repeatPassword: "",
     });
-    useEffect(() => {
-        if (userState.authenticated) {
-            history.push("/");
-        }
-    }, [])
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         try {

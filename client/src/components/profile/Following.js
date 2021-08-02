@@ -15,6 +15,7 @@ const Following = ({ setShowFollowing }) => {
   }
   useEffect(() => {
     getFollowing();
+    // eslint-disable-next-line
   },[]);
   return (
     <div className="follow">

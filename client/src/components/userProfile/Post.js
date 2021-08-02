@@ -86,6 +86,7 @@ export default function Post(props) {
     return () => {
       postDispatch({ type: "COMMENTS_UNLOADED" });
     };
+    // eslint-disable-next-line
   }, []);
   let month = new Date(props.post?.createdAt).toLocaleString("default", {
     month: "short",

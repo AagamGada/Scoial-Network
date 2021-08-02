@@ -23,7 +23,7 @@ const Info = () => {
   const handleFollow = async () => {
     try {
       const userId = params.userId;
-      const { data } = await axios.put(`/api/user/follow`, { _id: userId });
+      await axios.put(`/api/user/follow`, { _id: userId });
       getParticularUser();
     } catch (err) {
       console.log(err);
@@ -32,7 +32,7 @@ const Info = () => {
   const handleUnFollow = async () => {
     try {
       const userId = params.userId;
-      const { data } = await axios.put(`/api/user/unfollow`, { _id: userId });
+      await axios.put(`/api/user/unfollow`, { _id: userId });
       getParticularUser();
     } catch (err) {
       console.log(err);
@@ -43,6 +43,7 @@ const Info = () => {
     return () => {
       setUser(null);
     };
+    // eslint-disable-next-line
   }, [params.userId]);
   var follow = user?.followers?.filter(
     (val) => val.user === userState?.user?._id
@@ -50,11 +51,7 @@ const Info = () => {
   return (
     <div className="info">
       <div className="info_container">
-        <img
-          src={user?.image}
-          className="supper-avatar"
-          alt=""
-        />
+        <img src={user?.image} className="supper-avatar" alt="" />
         <div className="info_content">
           <div className="info_content_title">
             <h2>{user?.name}</h2>
@@ -89,7 +86,6 @@ const Info = () => {
             </h6>
           )}
           {user?.bio && <p className="m-0">{user?.bio}</p>}
-          <a target="_blank" rel="noreferrer"></a>
         </div>
         {showFollowers && <Followers setShowFollowers={setShowFollowers} />}
         {showFollowing && <Following setShowFollowing={setShowFollowing} />}

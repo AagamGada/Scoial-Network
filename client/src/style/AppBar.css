@@ -24,15 +24,6 @@
 button{
     outline: none !important;
 }
-.loginButton{
-    margin-left: 1%;
-    background-color: white;
-    color: black;
-}
-.loginButton:hover{
-    background-color: #B6DCFE !important;
-    color: black;
-}
 .userLine{
     margin: 0;
     padding:0,

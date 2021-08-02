@@ -48,7 +48,7 @@ export default function CenterBar() {
       profileImage = `http://localhost:5000/images/${fileName}`;
     }
     try {
-      if (post === "") {
+      if ((post === "") && (fileName === undefined )) {
         return enqueueSnackbar("Empty Post", { variant: "error" });
       }
       const { data } = await axios.post(`/api/post`, {
@@ -59,6 +59,7 @@ export default function CenterBar() {
       enqueueSnackbar("Posted Successfully", { variant: "success" });
       setPost("");
       getPersonalPost();
+      setFile(null);
     } catch (err) {
       console.log(err);
     }
@@ -76,6 +77,7 @@ export default function CenterBar() {
       postDispatch({ type: "POST_UNLOADED" });
       postDispatch({ type: "POSTS_UNLOADED" });
     };
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="CenterBar">

@@ -16,7 +16,9 @@ const Info = () => {
   };
   async function getParticularUser() {
     try {
-      const { data } = await axios.get(`/api/user/particularUser/${userState.user._id}`);
+      const { data } = await axios.get(
+        `/api/user/particularUser/${userState.user?._id}`
+      );
       setUser(data);
     } catch (err) {
       console.log(err);
@@ -27,11 +29,16 @@ const Info = () => {
     return () => {
       setUser(null);
     };
+    // eslint-disable-next-line
   }, [userState.user]);
   return (
     <div className="info">
       <div className="info_container">
-        <img src={userState.user?.image} alt="" className="supper-avatar" />
+        <img
+          src={userState.user?.image}
+          alt="hello"
+          className="supper-avatar"
+        />
         <div className="info_content">
           <div className="info_content_title">
             <h2>{userState.user?.name}</h2>
@@ -52,7 +59,6 @@ const Info = () => {
             <span className="text-danger"></span>
           </h6>
           <p className="m-0">{userState.user?.bio}</p>
-          <a target="_blank" rel="noreferrer"></a>
         </div>
         {open && <EditProfile setOpen={setOpen} />}
       </div>

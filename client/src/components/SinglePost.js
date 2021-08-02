@@ -89,6 +89,7 @@ export default function SinglePost() {
       postDispatch({ type: "COMMENTS_UNLOADED" });
       postDispatch({ type: "POST_UNLOADED" });
     };
+    // eslint-disable-next-line
   }, []);
   let month = new Date(post?.createdAt).toLocaleString("default", {
     month: "short",

@@ -27,23 +27,24 @@ const EditProfile = ({ setOpen }) => {
       }
     }
     var profileImage;
-    if(fileName === undefined){
+    if (fileName === undefined) {
       profileImage = userState.user.image;
-    }else{
+    } else {
       profileImage = `http://localhost:5000/images/${fileName}`;
     }
     try {
-      const { data } = await axios.put("/api/user/update", {...updatedValues, image: profileImage})
+      const { data } = await axios.put("/api/user/update", {
+        ...updatedValues,
+        image: profileImage,
+      });
       localStorage.removeItem("auth-token");
-      let accessToken=data.accessToken;
-      localStorage.setItem("auth-token",accessToken);
+      let accessToken = data.accessToken;
+      localStorage.setItem("auth-token", accessToken);
       userDispatch({ type: "UPDATE_USER", payload: data });
       enqueueSnackbar("Profile Updated Successfully", { variant: "success" });
       setOpen(false);
-      window.location.reload();
     } catch (err) {
       console.log(err);
-      // userDispatch({ type: "USER_ERROR", payload: err.response.data.msg });
       enqueueSnackbar("Invalid credentials", { variant: "error" });
     }
   };
@@ -58,15 +59,15 @@ const EditProfile = ({ setOpen }) => {
       <div className="edit_profile">
         <button
           className="btn btn-danger btn_close"
-          style={{marginTop: "10%"}}
+          style={{ marginTop: "10%" }}
           onClick={() => setOpen(false)}
         >
           Close
         </button>
 
-        <form onSubmit={handleSubmit} style={{marginTop: "5%"}}>
+        <form onSubmit={handleSubmit} style={{ marginTop: "5%" }}>
           <div className="info_avatar">
-            <img src={userState.user?.image} alt=""/>
+            <img src={userState.user?.image} alt="" />
             <span>
               <i className="fas fa-camera" />
               <p>Change</p>
@@ -88,7 +89,6 @@ const EditProfile = ({ setOpen }) => {
                 className="form-control"
                 id="name"
                 name="name"
-                value=""
                 onChange={handleChangeInput}
                 value={updatedValues.name}
               />

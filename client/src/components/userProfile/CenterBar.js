@@ -21,19 +21,18 @@ export default function CenterBar() {
     return () => {
       postDispatch({ type: "POSTS_UNLOADED" });
     };
+    // eslint-disable-next-line
   }, [params.userId]);
   return (
     <div className="CenterBar">
-      {postState.posts?.length>0 ? (
+      {postState.posts?.length > 0 ? (
         <div className="centerWrapper">
           {postState.posts?.slice(0).map((post) => {
             return <UserPosts post={post} key={post?._id} />;
           })}
         </div>
       ) : (
-        <div className="noPost">
-           No Post Uploaded
-        </div>
+        <div className="noPost">No Post Uploaded</div>
       )}
     </div>
   );

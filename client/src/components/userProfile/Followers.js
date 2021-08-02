@@ -16,6 +16,7 @@ const Followers = ({ setShowFollowers }) => {
   }
   useEffect(() => {
     getFollowers();
+    // eslint-disable-next-line
   }, [params.userId]);
   return (
     <div className="follow">
@@ -23,8 +24,10 @@ const Followers = ({ setShowFollowers }) => {
         <h5 className="text-center">Followers</h5>
         <hr />
         <div className="follow_content">
-          <UserCard setShowFollowers={setShowFollowers} allFollowers={allFollowers}>
-          </UserCard>
+          <UserCard
+            setShowFollowers={setShowFollowers}
+            allFollowers={allFollowers}
+          ></UserCard>
         </div>
         <div className="close" onClick={() => setShowFollowers(false)}>
           &times;

@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import UserCard from "./UserCard";
 import axios from "../../utils/axios";
-// import { useParams } from "react-router";
 import { UserContext } from "../../context/UserContext"
 const Followers = ({ setShowFollowers }) => {
   const [allFollowers, setAllFollowers] = useState(null);
   const { userState } = useContext(UserContext);
-//   const params = useParams();
   async function getFollowers() {
     try {
-    //   const userId = params.userId;
       const { data } = await axios.get(`/api/user/followers/${userState.user._id}`);
       setAllFollowers(data);
     } catch (err) {
@@ -18,6 +15,7 @@ const Followers = ({ setShowFollowers }) => {
   }
   useEffect(() => {
     getFollowers();
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="follow">

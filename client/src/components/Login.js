@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useContext} from 'react'
+import React, { useState, useContext} from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { UserContext } from '../context/UserContext';
 import { useSnackbar } from 'notistack';
@@ -6,7 +6,7 @@ import axios from '../utils/axios';
 import '../style/Register.css'
 
 const Login = () => {
-    const {userState,userDispatch}=useContext(UserContext);
+    const {userDispatch}=useContext(UserContext);
     const history = useHistory();
     const {enqueueSnackbar}=useSnackbar();
     const [loginValue,setloginValues]=useState({
@@ -32,11 +32,6 @@ const Login = () => {
             ...prev,[ev.target.name]:ev.target.value,
         }));
     }
-     useEffect(() => {
-        if (userState.authenticated) {
-            history.push("/");
-        }
-    }, [])
 
     return (
         <div className="auth_page">
