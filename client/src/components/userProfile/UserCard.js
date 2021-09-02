@@ -17,7 +17,7 @@ const UserCard = ({
         <div onClick={handleCloseAll}>
           {allFollowers?.slice(0).map((followers, key) => {
             return (
-              <Link to={`/userProfile/${followers.user._id}`} key={key}>
+              <Link to={`/Social-Hunt/userProfile/${followers.user._id}`} key={key}>
               <div className="d-flex align-items-center mt-3 ">
                 <img src={followers.user.image} alt="" className="big-avatar" />
                 <div className="ml-1" style={{ transform: "translateY(-2px)" }}>

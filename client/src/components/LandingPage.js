@@ -12,14 +12,14 @@ export default function LandingPage() {
       <h1 className="introText">Share your Content with Everyone</h1>
       <h6 className="intro">An Application to post your thoughts and memories</h6>
       <div className="appButton">
-        <Link to="/signup">
+        <Link to="/Social-Hunt/signup">
         <button className="button">
           <span>Get Started</span>
         </button>
         </Link>
       </div>
       <p className="login">
-        Already have a Account? <Link to="/login"><span className="loginLink">Login</span></Link>
+        Already have a Account? <Link to="/Social-Hunt/login"><span className="loginLink">Login</span></Link>
       </p>
       <section id="services" className="section">
         <div className="container">

@@ -15,7 +15,7 @@ const UserProvider = (props) => {
         if (accessToken) {
           const { data } = await axios.get("/api/user/fetch");
           dispatch({ type: "FETCH_USER", payload: data.user });
-          history.push("/");
+          history.push("/Social-Hunt/");
         }
       } catch (err) {
         dispatch({ type: "USER_ERROR", payload: err.response?.data });

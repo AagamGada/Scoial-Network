@@ -122,7 +122,7 @@ export default function PrimarySearchAppBar() {
   const Logout = () => {
     localStorage.removeItem("auth-token");
     userDispatch({ type: "LOGOUT_USER" });
-    history.push("/landing");
+    history.push("/Social-Hunt/landing");
   };
 
   
@@ -157,7 +157,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem
         onClick={() => {
-          history.push("/profile");
+          history.push("/Social-Hunt/profile/");
         }}
       >
         Profile
@@ -179,7 +179,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem
         onClick={() => {
-          history.push("/");
+          history.push("/Social-Hunt/");
         }}
       >
         <IconButton aria-label="show 4 new mails" color="inherit">
@@ -212,7 +212,7 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
                 aria-label="open drawer"
                 onClick={() => {
-                  history.push("/");
+                  history.push("/Social-Hunt/");
                 }}
               >
                 <img src={Icon} alt=""></img>
@@ -245,7 +245,7 @@ export default function PrimarySearchAppBar() {
                     aria-label="show 4 new mails"
                     color="inherit"
                     onClick={() => {
-                      history.push("/");
+                      history.push("/Social-Hunt/");
                     }}
                   >
                     <HomeIcon />
@@ -300,7 +300,7 @@ export default function PrimarySearchAppBar() {
             .map((val, key) => {
               return (
                 <div key={key}>
-                  <Link to={`/userProfile/${val._id}`}>
+                  <Link to={`/Socail-Hunt/userProfile/${val._id}`}>
                     <div
                       className="searchUser"
                       style={{ color: "blue", display: "flex" }}

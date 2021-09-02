@@ -17,25 +17,25 @@ export default function App() {
       <UserProvider>
         <PostProvider>
           <Switch>
-            <Route exact path="/landing" component={LandingPage}></Route>
-            <Route exact path="/login" component={Login}></Route>
-            <Route exact path="/signup" component={Signup}></Route>
+            <Route exact path="/Social-Hunt/landing" component={LandingPage}></Route>
+            <Route exact path="/Social-Hunt/login" component={Login}></Route>
+            <Route exact path="/Social-Hunt/signup" component={Signup}></Route>
             <PrivateRoute
               exact
-              path="/profile"
+              path="/Social-Hunt/profile"
               component={Profile}
             ></PrivateRoute>
             <PrivateRoute
               exact
-              path="/post/:postId"
+              path="/Social-Hunt/post/:postId"
               component={SinglePost}
             ></PrivateRoute>
             <PrivateRoute
               exact
-              path="/userProfile/:userId"
+              path="/Social-Hunt/userProfile/:userId"
               component={UserProfile}
             ></PrivateRoute>
-            <PrivateRoute exact path="/" component={Home}></PrivateRoute>
+            <PrivateRoute exact path="/Social-Hunt/" component={Home}></PrivateRoute>
           </Switch>
         </PostProvider>
       </UserProvider>

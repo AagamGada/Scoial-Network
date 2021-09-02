@@ -21,7 +21,7 @@ export default function NewLogin() {
             let accessToken=data.accessToken;
             localStorage.setItem("auth-token",accessToken);
             enqueueSnackbar("Logged in Successfully",{variant:"success"})
-            history.push("/")
+            history.push("/Social-Hunt/")
         }catch(err){
             console.log(err);
             enqueueSnackbar("Invalid login credentials",{variant:"error"})
@@ -48,7 +48,7 @@ export default function NewLogin() {
         </div>
         <input type="submit" value="Login"/>
         <div className="signup_link">
-          Not a member? <Link to="/signup">Signup</Link>
+          Not a member? <Link to="/Social-Hunt/signup">Signup</Link>
         </div>
       </form> 
     </div>
