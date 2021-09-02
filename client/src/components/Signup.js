@@ -27,7 +27,7 @@ export default function Signup() {
             userDispatch({ type: "REGISTER_USER", payload: data.payload });
 
             enqueueSnackbar("Registered Successfully", { variant: "success" });
-            history.push("/Social-Hunt/")
+            history.push("/")
         } catch (err) {
           enqueueSnackbar("Invalid credentials",{variant:"error"})
         }
@@ -64,7 +64,7 @@ export default function Signup() {
         </div>
         <input type="submit" value="Signup" />
         <div className="signup_link">
-          Already a member? <Link to="/Social-Hunt/login">Login</Link>
+          Already a member? <Link to="/login">Login</Link>
         </div>
       </form>
     </div>

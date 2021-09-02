@@ -7,8 +7,8 @@ const path = require("path")
 require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-const NODE_ENV = process.env.NODE_ENV || "DEV";
+const PORT = 5000;
+const NODE_ENV = "PRODUCTION";
 
 app.use("/images",express.static(path.join(__dirname,"public","images")));
 app.use(express.json());
@@ -21,6 +21,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 
 dbInit();
 
+app.use("/Social-Hunt",express.static("build"));
 const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
 const commentRoutes = require("./routes/comment");

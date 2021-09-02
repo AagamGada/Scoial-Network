@@ -11,7 +11,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         userState.authenticated ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/Social-Hunt/landing" />
+          <Redirect to="/landing" />
         )
       }
     />

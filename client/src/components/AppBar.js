@@ -122,7 +122,7 @@ export default function PrimarySearchAppBar() {
   const Logout = () => {
     localStorage.removeItem("auth-token");
     userDispatch({ type: "LOGOUT_USER" });
-    history.push("/Social-Hunt/landing");
+    history.push("/landing");
   };
 
   
@@ -157,7 +157,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem
         onClick={() => {
-          history.push("/Social-Hunt/profile/");
+          history.push("/profile");
         }}
       >
         Profile
@@ -179,7 +179,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem
         onClick={() => {
-          history.push("/Social-Hunt/");
+          history.push("/");
         }}
       >
         <IconButton aria-label="show 4 new mails" color="inherit">
@@ -212,7 +212,7 @@ export default function PrimarySearchAppBar() {
                 color="inherit"
                 aria-label="open drawer"
                 onClick={() => {
-                  history.push("/Social-Hunt/");
+                  history.push("/");
                 }}
               >
                 <img src={Icon} alt=""></img>
@@ -245,7 +245,7 @@ export default function PrimarySearchAppBar() {
                     aria-label="show 4 new mails"
                     color="inherit"
                     onClick={() => {
-                      history.push("/Social-Hunt/");
+                      history.push("/");
                     }}
                   >
                     <HomeIcon />

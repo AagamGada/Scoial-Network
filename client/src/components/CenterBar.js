@@ -43,7 +43,7 @@ export default function CenterBar() {
     if(fileName === undefined){
       profileImage = "";
     }else{
-      profileImage = `Social-Hunt/images/${fileName}`;
+      profileImage = `/Social-Hunt/images/${fileName}`;
     }
     try {
       if ((post === "") && (fileName === undefined )) {

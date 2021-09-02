@@ -185,7 +185,7 @@ export default function Post(props) {
           )}
 
           <div className="postBottomRight">
-            <Link to={`/Social-Hunt/post/${props.post?._id}`}>
+            <Link to={`/post/${props.post?._id}`}>
               <span className="postCommentText">
                 {allComments?.length} comments
               </span>

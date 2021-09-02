@@ -130,7 +130,7 @@ export default function Post(props) {
             <LikesCard allLikes={allLikes} setShowLikes={setShowLikes} />
           )}
           <div className="postBottomRight">
-            <Link to={`/Social-Hunt/post/${props.post?._id}`}>
+            <Link to={`/post/${props.post?._id}`}>
               <span className="postCommentText">
                 {allComments.length} comments
               </span>
