@@ -95,10 +95,33 @@ export default function Post(props) {
     }
   };
   useEffect(() => {
+    var mounted = true;
+    async function getAllComments() {
+      try {
+        const { data } = await axios.get(`/api/comment/${props.post._id}`);
+        if (mounted) {
+          postDispatch({ type: "COMMENTS_LOADED", payload: data });
+          setAllComments(data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
     getAllComments();
+    async function getAllLikes() {
+      try {
+        const { data } = await axios.get(`/api/post/getlikes/${props.post._id}`);
+        if (mounted) {
+        setAllLikes([data]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
     getAllLikes();
     return () => {
       postDispatch({ type: "COMMENTS_UNLOADED" });
+      mounted = false;
     };
     // eslint-disable-next-line
   }, []);

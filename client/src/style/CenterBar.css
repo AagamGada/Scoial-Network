@@ -1,3 +1,7 @@
+@font-face {
+  font-family: introFont;
+  src: url(../downloads/Besley-Regular.ttf);
+}
 .CenterBar {
   flex: 5.5;
 }
@@ -85,6 +89,7 @@ hr {
   margin-top: 10%;
   font-size: 40px;
   color: grey;
+  font-family: introText;
 }
 
 .photoContainer{

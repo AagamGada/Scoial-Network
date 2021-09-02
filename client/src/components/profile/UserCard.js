@@ -14,9 +14,9 @@ const UserCard = ({
     <div className="d-flex p-2  w-100 card">
       <div>
         <div onClick={handleCloseAll}>
-          {allFollowers?.slice(0).map((followers) => {
+          {allFollowers?.slice(0).map((followers, key) => {
             return (
-              <div className="d-flex align-items-center mt-3 ">
+              <div className="d-flex align-items-center mt-3 " key={key}>
                 <img src={followers.user.image} alt="" className="big-avatar" />
                 <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
                   <span className="d-block">{followers.user.name}</span>
@@ -25,9 +25,9 @@ const UserCard = ({
               </div>
             );
           })}
-          {allFollowing?.slice(0).map((following) => {
+          {allFollowing?.slice(0).map((following, key) => {
             return (
-              <div className="d-flex align-items-center mt-3 ">
+              <div className="d-flex align-items-center mt-3 " key={key}>
                 <img src={following.user.image} alt="" className="big-avatar" />
                 <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
                   <span className="d-block">{following.user.name}</span>

@@ -17,7 +17,7 @@ const userSchema = new Schema(
     },
     image: {
       type: String,
-      default: "http://localhost:5000/images/pimage.jpg"
+      default: "/Social-Hunt/images/pimage.jpg"
     },
     gender: {
       type: String,

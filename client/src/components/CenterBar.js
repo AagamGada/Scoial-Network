@@ -43,7 +43,7 @@ export default function CenterBar() {
     if(fileName === undefined){
       profileImage = "";
     }else{
-      profileImage = `http://localhost:5000/images/${fileName}`;
+      profileImage = `Social-Hunt/images/${fileName}`;
     }
     try {
       if ((post === "") && (fileName === undefined )) {
@@ -138,9 +138,13 @@ export default function CenterBar() {
           </div>
         </div>
         {emoji && <Emoji handleEmoji={handleEmoji} />}
-        {postState?.posts?.slice(0).map((post) => {
-          return <Post post={post} key={post?._id} />;
-        })}
+        {postState?.posts?.length > 0 ? (
+          postState?.posts?.slice(0).map((post) => {
+            return <Post post={post} key={post?._id} />;
+          })
+        ) : (
+          <div className="noPost">Follow People to See Their Post Here</div>
+        )}
       </div>
     </div>
   );

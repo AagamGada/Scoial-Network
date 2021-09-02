@@ -3,9 +3,9 @@ import { Link, useHistory } from 'react-router-dom'
 import { UserContext } from '../context/UserContext';
 import { useSnackbar } from 'notistack';
 import axios from '../utils/axios';
-import '../style/Register.css'
+import '../style/Login.css'
 
-const Login = () => {
+export default function NewLogin() {
     const {userDispatch}=useContext(UserContext);
     const history = useHistory();
     const {enqueueSnackbar}=useSnackbar();
@@ -32,43 +32,25 @@ const Login = () => {
             ...prev,[ev.target.name]:ev.target.value,
         }));
     }
-
     return (
-        <div className="auth_page">
-            <form onSubmit={handleSubmit}>
-                <h3 className="text-uppercase text-center mb-4">Social-Hunt</h3>
-                <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="email" className="form-control" id="exampleInputEmail1" name="email"
-                    aria-describedby="emailHelp" onChange={handleChangeInput} value={loginValue.email}/>
-                    
-                    <small id="emailHelp" className="form-text text-muted">
-                        We'll never share your email with anyone else.
-                    </small>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-
-                    <div className="pass">
-                        
-                        <input 
-                        className="form-control" id="exampleInputPassword1" type="password"
-                        onChange={handleChangeInput}  name="password" value={loginValue.password}/>
-                    </div>
-                   
-                </div>
-                
-                <button type="submit" className="btn btn-dark w-100">
-                    Login
-                </button>
-
-                <p className="my-2">
-                    You don't have an account? <Link to="/register" style={{color: "crimson"}}>Register Now</Link>
-                </p>
-            </form>
+    <div className="center">
+      <h1>Login</h1>
+      <form method="post" onSubmit={handleSubmit}>
+        <div className="txt_field">
+          <input type="text" required name="email" onChange={handleChangeInput} value={loginValue.email}/>
+          <span></span>
+          <label>Email</label>
         </div>
+        <div className="txt_field">
+          <input type="password" required name="password" onChange={handleChangeInput} value={loginValue.password}/>
+          <span></span>
+          <label>Password</label>
+        </div>
+        <input type="submit" value="Login"/>
+        <div className="signup_link">
+          Not a member? <Link to="/signup">Signup</Link>
+        </div>
+      </form> 
+    </div>
     )
 }
-
-export default Login

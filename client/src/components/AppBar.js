@@ -21,7 +21,7 @@ import Icon from "../images/icon.png";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 0,
-    // borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
+    borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -84,10 +84,10 @@ const useStyles = makeStyles((theme) => ({
   },
   topBar: {
     display: "flex",
-    backgroundColor: "#4d7292",
-    color: "#fff",
+    backgroundColor: "#fff",
+    color: "black",
     boxShadow: "none",
-    // borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
+    borderBottom: "1px solid rgba(var(--b6a,219,219,219),1)",
   },
 }));
 
@@ -122,21 +122,25 @@ export default function PrimarySearchAppBar() {
   const Logout = () => {
     localStorage.removeItem("auth-token");
     userDispatch({ type: "LOGOUT_USER" });
-    history.push("/login");
+    history.push("/landing");
   };
-  
-  async function getAllUsers() {
-    try {
-      const { data } = await axios.get("/api/user");
-      userDispatch({ type: "USERS_LOADED", payload: data });
-      setAllUsers([data]);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  useEffect(() => {
-    getAllUsers();
 
+  
+  useEffect(() => {
+    var mounted = true;
+    async function getAllUsers() {
+      try {
+        const { data } = await axios.get("/api/user");
+        if(mounted){
+        userDispatch({ type: "USERS_LOADED", payload: data });
+        setAllUsers([data]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getAllUsers()
+    return () => mounted = false;
     // eslint-disable-next-line
   }, []);
 
@@ -216,55 +220,63 @@ export default function PrimarySearchAppBar() {
               <Typography className={classes.title} variant="h6" noWrap>
                 Social-Hunt
               </Typography>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
+              {userState.authenticated && (
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search people…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput,
+                    }}
+                    onChange={(ev) => {
+                      setSearchTerm(ev.target.value);
+                    }}
+                    inputProps={{ "aria-label": "search" }}
+                  />
                 </div>
-                <InputBase
-                  placeholder="Search people…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  onChange={(ev) => {
-                    setSearchTerm(ev.target.value);
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </div>
+              )}
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                  onClick={() => {
-                    history.push("/");
-                  }}
-                >
-                  <HomeIcon />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
+                {userState.authenticated && (
+                  <IconButton
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                    onClick={() => {
+                      history.push("/");
+                    }}
+                  >
+                    <HomeIcon />
+                  </IconButton>
+                )}
+                {userState.authenticated && (
+                  <IconButton
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                )}
               </div>
-              <div className={classes.sectionMobile}>
-                <IconButton
-                  aria-label="show more"
-                  aria-controls={mobileMenuId}
-                  aria-haspopup="true"
-                  onClick={handleMobileMenuOpen}
-                  color="inherit"
-                >
-                  <MoreIcon />
-                </IconButton>
-              </div>
+              {userState.authenticated && (
+                <div className={classes.sectionMobile}>
+                  <IconButton
+                    aria-label="show more"
+                    aria-controls={mobileMenuId}
+                    aria-haspopup="true"
+                    onClick={handleMobileMenuOpen}
+                    color="inherit"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </div>
+              )}
             </Toolbar>
           </Container>
         </AppBar>
