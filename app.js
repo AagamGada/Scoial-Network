@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const app = express();
 const PORT = 5000;
-const NODE_ENV = "PRODUCTION";
+const NODE_ENV = "DEV";
 
 app.use("/images",express.static(path.join(__dirname,"public","images")));
 app.use(express.json());
